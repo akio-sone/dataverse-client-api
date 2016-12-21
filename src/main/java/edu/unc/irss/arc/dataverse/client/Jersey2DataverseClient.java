@@ -15,6 +15,9 @@ import edu.unc.irss.arc.dataverse.client.util.json.Data;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -956,7 +959,10 @@ public class Jersey2DataverseClient {
 
         return ldf;
     }
-
+    /**
+     * 
+     * @return 
+     */
     public String uploadFilesToDataset(){
         if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
                 StringUtils.isNotBlank(clientConfig.getPersistentId())) {
@@ -1065,6 +1071,105 @@ public class Jersey2DataverseClient {
         }
         return returnedResult;
     }
+    
+    
+    
+    /**
+     *
+     * @param pathToFile  an absolute path as a String
+     * @param persistentId
+     * @return
+     */
+    public String addFilesToDataset(String pathToFile, String persistentId) {
+        
+        logger.log(Level.INFO, "pathToFile={0}", pathToFile);
+        logger.log(Level.INFO, "persistentId={0}", persistentId);
+                File zipFile = null;
+        
+        Path payloadPath = Paths.get(pathToFile);
+        if (Files.exists(payloadPath)){
+            
+            
+            
+            
+        } else {
+            logger.log(Level.SEVERE, "payload path does not exists", payloadPath);
+            throw new IllegalArgumentException("playload file does not exist");
+        }
+        
+        
+
+
+        Response response = null;
+        String returnedResult = null;
+
+        try {
+            if (zipFile == null || !zipFile.exists()) {
+                logger.log(Level.INFO, "zip file [{0}] does not exist",
+                        zipFile.getAbsolutePath());
+                throw new IllegalArgumentException("zip file does not exist");
+            } else if (StringUtils.isBlank(persistentId)) {
+                logger.log(Level.INFO, "persistentId is blank");
+                throw new IllegalArgumentException("persistentId is blank");
+            }
+
+            webTarget = client.target(clientConfig.getServerURI()
+                    + getSwordApiUri("/study")).path(persistentId);
+
+            response = webTarget
+                    .request()
+                    .header("Content-Disposition", "filename=" + zipFile.getName())
+                    .header("Content-Type", "application/zip")
+                    .header("Packaging", "http://purl.org/net/sword/package/SimpleZip")
+                    //                    .header("Content-MD5", "d1a80c8a550c515ef5c697d16516dbc0")
+                    .post(Entity.entity(zipFile, MediaType.APPLICATION_OCTET_STREAM));
+
+            int statusCode = response.getStatus();
+            returnedResult = response.readEntity(String.class);
+
+            logger.log(Level.INFO, "response.status={0}", statusCode);
+            logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
+
+            if (statusCode == 201) {
+                logger.log(Level.INFO, "adding files to a dataset was successful");
+            } else {
+                // parse the returned code; Normal case 
+                logger.log(Level.SEVERE, "adding files to a dataset failed: status code={0}",
+                        statusCode);
+            }
+
+        } catch (IllegalArgumentException ex) {
+            logger.log(Level.SEVERE, "arguments are not valid", ex);
+        } finally {
+            if (response != null) {
+                response.close();
+            }
+            client.close();
+        }
+        return returnedResult;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     /**
      *
