@@ -1,0 +1,24 @@
+{
+    "status": "OK",
+    "data": {
+        "id": 3104,
+        "alias": "new-dataverse-by-api",
+        "name": "new dataverse created by native api",
+        "affiliation": "Affiliation value",
+        "dataverseContacts": [{
+                "displayOrder": 0,
+                "contactEmail": "asone@email.unc.edu"
+            }],
+        "permissionRoot": true,
+        "description": "new dataverse created by native api under the root dataverse",
+        "ownerId": 1,
+        "creationDate": "2016-06-01T18:40:21Z",
+        "creator": {
+            "identifier": "@asone",
+            "displayInfo": {
+                "Title": "Akio Sone",
+                "email": "asone@email.unc.edu"
+            }
+        }
+    }
+}

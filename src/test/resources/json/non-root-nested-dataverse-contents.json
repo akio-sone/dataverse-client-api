@@ -1,0 +1,24 @@
+{
+    "status": "OK",
+    "data": [{
+            "id": 64,
+            "identifier": "PQ1HF3",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/PQ1HF3",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "type": "dataset"
+        }, {
+            "id": 72,
+            "identifier": "I3FFMJ",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/I3FFMJ",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "type": "dataset"
+        }, {
+            "type": "dataverse",
+            "id": 73,
+            "title": "Dataverse within unpublished dataverse"
+        }]
+}

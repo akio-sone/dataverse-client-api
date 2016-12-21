@@ -1,0 +1,189 @@
+{
+    "status": "OK",
+    "data": {
+        "id": 64,
+        "identifier": "PQ1HF3",
+        "persistentUrl": "http://dx.doi.org/10.5072/FK2/PQ1HF3",
+        "protocol": "doi",
+        "authority": "10.5072/FK2",
+        "latestVersion": {
+            "id": 22,
+            "versionState": "DRAFT",
+            "productionDate": "Production Date",
+            "UNF": "UNF:6:ZWIYlMKfx+MHLqGRd3MLuA==",
+            "lastUpdateTime": "2016-07-08T16:14:20Z",
+            "createTime": "2016-07-08T16:14:20Z",
+            "metadataBlocks": {
+                "citation": {
+                    "displayName": "Citation Metadata",
+                    "fields": [{
+                            "typeName": "title",
+                            "multiple": false,
+                            "typeClass": "primitive",
+                            "value": "test dataset for an unpublished dataverse"
+                        }, {
+                            "typeName": "author",
+                            "multiple": true,
+                            "typeClass": "compound",
+                            "value": [{
+                                    "authorName": {
+                                        "typeName": "authorName",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "testuser, api"
+                                    },
+                                    "authorAffiliation": {
+                                        "typeName": "authorAffiliation",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "UNC Odum"
+                                    }
+                                }]
+                        }, {
+                            "typeName": "datasetContact",
+                            "multiple": true,
+                            "typeClass": "compound",
+                            "value": [{
+                                    "datasetContactName": {
+                                        "typeName": "datasetContactName",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "testuser, api"
+                                    },
+                                    "datasetContactAffiliation": {
+                                        "typeName": "datasetContactAffiliation",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "UNC Odum"
+                                    },
+                                    "datasetContactEmail": {
+                                        "typeName": "datasetContactEmail",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "asone@email.unc.edu"
+                                    }
+                                }]
+                        }, {
+                            "typeName": "dsDescription",
+                            "multiple": true,
+                            "typeClass": "compound",
+                            "value": [{
+                                    "dsDescriptionValue": {
+                                        "typeName": "dsDescriptionValue",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "This test dataset is going to be never published"
+                                    }
+                                }]
+                        }, {
+                            "typeName": "subject",
+                            "multiple": true,
+                            "typeClass": "controlledVocabulary",
+                            "value": ["Other"]
+                        }, {
+                            "typeName": "depositor",
+                            "multiple": false,
+                            "typeClass": "primitive",
+                            "value": "testuser, api"
+                        }, {
+                            "typeName": "dateOfDeposit",
+                            "multiple": false,
+                            "typeClass": "primitive",
+                            "value": "2016-07-08"
+                        }]
+                }
+            },
+            "files": [{
+                    "label": "11_400-405_8162010.pdf",
+                    "version": 1,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 71,
+                        "name": "11_400-405_8162010.pdf",
+                        "contentType": "application/pdf",
+                        "filename": "155cb492c37-69333e2bbed1",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "504e5c3a4431ab2518bbdd6f3993a346"
+                    }
+                }, {
+                    "label": "11_Blank_US_map_borders_labels.svg",
+                    "version": 1,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 65,
+                        "name": "11_Blank_US_map_borders_labels.svg",
+                        "contentType": "application/octet-stream",
+                        "filename": "155cb492c67-b6d374cd5b81",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "c7ce4539d261d22451079e4f6322839c"
+                    }
+                }, {
+                    "label": "11_enforcer_menu_2012-10-08.png",
+                    "version": 1,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 66,
+                        "name": "11_enforcer_menu_2012-10-08.png",
+                        "contentType": "image/png",
+                        "filename": "155cb493096-3193d4fc3ab0",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "1ca862c29aa84178c165e52485e26799"
+                    }
+                }, {
+                    "label": "11_ReportData.java",
+                    "version": 1,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 69,
+                        "name": "11_ReportData.java",
+                        "contentType": "application/octet-stream",
+                        "filename": "155cb4930a8-5190cef5a353",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "951615f3d5bacf4562a8b55af33f96e7"
+                    }
+                }, {
+                    "label": "wrld96z8_dta_11.tab",
+                    "version": 2,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 68,
+                        "name": "wrld96z8_dta_11.tab",
+                        "contentType": "text/tab-separated-values",
+                        "filename": "155cb4930bc-1747f5a61281",
+                        "originalFileFormat": "application/x-stata",
+                        "originalFormatLabel": "Stata Binary",
+                        "UNF": "UNF:6:MG63BIvFTMRK6Otb0lnKXA==",
+                        "md5": "2385f5f725d612c5f621a94f55d25683"
+                    }
+                }, {
+                    "label": "wrld96z8_por_11.tab",
+                    "version": 2,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 70,
+                        "name": "wrld96z8_por_11.tab",
+                        "contentType": "text/tab-separated-values",
+                        "filename": "155cb4930be-4c30ed9ca4d5",
+                        "originalFileFormat": "application/x-spss-por",
+                        "originalFormatLabel": "SPSS Portable",
+                        "UNF": "UNF:6:MG63BIvFTMRK6Otb0lnKXA==",
+                        "md5": "9925a62c824cb25e39e0172e83267dc1"
+                    }
+                }, {
+                    "label": "wrld96z8_sav_11.tab",
+                    "version": 2,
+                    "datasetVersionId": 22,
+                    "datafile": {
+                        "id": 67,
+                        "name": "wrld96z8_sav_11.tab",
+                        "contentType": "text/tab-separated-values",
+                        "filename": "155cb4930c0-faea1b701f8f",
+                        "originalFileFormat": "application/x-spss-sav",
+                        "originalFormatLabel": "SPSS SAV",
+                        "UNF": "UNF:6:MG63BIvFTMRK6Otb0lnKXA==",
+                        "md5": "c313e24689379d87e38e0fe0230d5112"
+                    }
+                }]
+        }
+    }
+}

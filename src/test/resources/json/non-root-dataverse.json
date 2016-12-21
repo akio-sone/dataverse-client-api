@@ -1,0 +1,28 @@
+{
+    "status": "OK",
+    "data": [{
+            "id": 74,
+            "identifier": "EQOHNB",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/EQOHNB",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "type": "dataset"
+        }, {
+            "id": 82,
+            "identifier": "E8IB8Q",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/E8IB8Q",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "type": "dataset"
+        }, {
+            "id": 93,
+            "identifier": "ZOU3HT",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/ZOU3HT",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "type": "dataset"
+        }]
+}

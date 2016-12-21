@@ -1,0 +1,22 @@
+{
+    "status": "OK",
+    "data": {
+        "id": 1,
+        "alias": "root",
+        "name": "Root",
+        "dataverseContacts": [{
+                "displayOrder": 0,
+                "contactEmail": "root@mailinator.com"
+            }],
+        "permissionRoot": true,
+        "description": "The root dataverse.",
+        "creationDate": "2015-07-31T15:19:35Z",
+        "creator": {
+            "identifier": "@dataverseAdmin",
+            "displayInfo": {
+                "Title": "Dataverse Admin",
+                "email": "dls@email.unc.edu"
+            }
+        }
+    }
+}

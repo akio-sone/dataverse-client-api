@@ -1,0 +1,218 @@
+{
+    "status": "OK",
+    "data": {
+        "id": 82,
+        "identifier": "E8IB8Q",
+        "persistentUrl": "http://dx.doi.org/10.5072/FK2/E8IB8Q",
+        "protocol": "doi",
+        "authority": "10.5072/FK2",
+        "publisher": "Root Dataverse",
+        "latestVersion": {
+            "id": 25,
+            "versionState": "DRAFT",
+            "productionDate": "Production Date",
+            "UNF": "UNF:6:PXyGiHNrzkfN5fuEQDAnjA==",
+            "lastUpdateTime": "2016-09-08T19:37:53Z",
+            "createTime": "2016-07-25T15:39:12Z",
+            "license": "CC0",
+            "termsOfUse": "CC0 Waiver",
+            "metadataBlocks": {
+                "citation": {
+                    "displayName": "Citation Metadata",
+                    "fields": [{
+                            "typeName": "title",
+                            "multiple": false,
+                            "typeClass": "primitive",
+                            "value": "another dataset in an unpublished dataverse within an unpublished dataverse"
+                        }, {
+                            "typeName": "author",
+                            "multiple": true,
+                            "typeClass": "compound",
+                            "value": [{
+                                    "authorName": {
+                                        "typeName": "authorName",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "testuser, api"
+                                    },
+                                    "authorAffiliation": {
+                                        "typeName": "authorAffiliation",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "UNC Odum"
+                                    }
+                                }]
+                        }, {
+                            "typeName": "datasetContact",
+                            "multiple": true,
+                            "typeClass": "compound",
+                            "value": [{
+                                    "datasetContactName": {
+                                        "typeName": "datasetContactName",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "testuser, api"
+                                    },
+                                    "datasetContactAffiliation": {
+                                        "typeName": "datasetContactAffiliation",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "UNC Odum"
+                                    },
+                                    "datasetContactEmail": {
+                                        "typeName": "datasetContactEmail",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "asone@email.unc.edu"
+                                    }
+                                }]
+                        }, {
+                            "typeName": "dsDescription",
+                            "multiple": true,
+                            "typeClass": "compound",
+                            "value": [{
+                                    "dsDescriptionValue": {
+                                        "typeName": "dsDescriptionValue",
+                                        "multiple": false,
+                                        "typeClass": "primitive",
+                                        "value": "This dataset will be used for sword2-api testing"
+                                    }
+                                }]
+                        }, {
+                            "typeName": "subject",
+                            "multiple": true,
+                            "typeClass": "controlledVocabulary",
+                            "value": ["Other"]
+                        }, {
+                            "typeName": "depositor",
+                            "multiple": false,
+                            "typeClass": "primitive",
+                            "value": "testuser, api"
+                        }, {
+                            "typeName": "dateOfDeposit",
+                            "multiple": false,
+                            "typeClass": "primitive",
+                            "value": "2016-07-25"
+                        }]
+                }
+            },
+            "files": [{
+                    "description": "",
+                    "label": "13 400-405_8162010.pdf",
+                    "version": 1,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 150,
+                        "filename": "13 400-405_8162010.pdf",
+                        "contentType": "application/pdf",
+                        "storageIdentifier": "157062ab3ce-8be84b258af1",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "504e5c3a4431ab2518bbdd6f3993a346",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "13 Blank_US_map_borders_labels.svg",
+                    "version": 1,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 152,
+                        "filename": "13 Blank_US_map_borders_labels.svg",
+                        "contentType": "application/octet-stream",
+                        "storageIdentifier": "157062aaf46-d333b5083d06",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "c7ce4539d261d22451079e4f6322839c",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "13 enforcer_menu_2012-10-08.png",
+                    "version": 1,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 155,
+                        "filename": "13 enforcer_menu_2012-10-08.png",
+                        "contentType": "image/png",
+                        "storageIdentifier": "157062ab3c2-e95c39c9b1f9",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "1ca862c29aa84178c165e52485e26799",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "13 New Text Document.txt",
+                    "version": 1,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 151,
+                        "filename": "13 New Text Document.txt",
+                        "contentType": "application/octet-stream",
+                        "storageIdentifier": "157062aae6e-964e2250b6a8",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "d41d8cd98f00b204e9800998ecf8427e",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "13 ReportData.java",
+                    "version": 1,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 156,
+                        "filename": "13 ReportData.java",
+                        "contentType": "application/octet-stream",
+                        "storageIdentifier": "157062aae73-fb6d5319885a",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "c93f3ae67eaa44034a962abb59ac78bc",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "readme.md",
+                    "version": 1,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 154,
+                        "filename": "readme.md",
+                        "contentType": "application/octet-stream",
+                        "storageIdentifier": "157062ab423-a2b63deef323",
+                        "originalFormatLabel": "UNKNOWN",
+                        "md5": "d41d8cd98f00b204e9800998ecf8427e",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "wrld96z8 dta 13.tab",
+                    "version": 2,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 153,
+                        "filename": "wrld96z8 dta 13.tab",
+                        "contentType": "text/tab-separated-values",
+                        "storageIdentifier": "157062aae7e-4e4674f7e795",
+                        "originalFileFormat": "application/x-stata",
+                        "originalFormatLabel": "Stata Binary",
+                        "UNF": "UNF:6:MG63BIvFTMRK6Otb0lnKXA==",
+                        "md5": "2385f5f725d612c5f621a94f55d25683",
+                        "description": ""
+                    }
+                }, {
+                    "description": "",
+                    "label": "wrld96z8 por 13.tab",
+                    "version": 2,
+                    "datasetVersionId": 25,
+                    "dataFile": {
+                        "id": 157,
+                        "filename": "wrld96z8 por 13.tab",
+                        "contentType": "text/tab-separated-values",
+                        "storageIdentifier": "157062aaf42-c27aa1aded26",
+                        "originalFileFormat": "application/x-spss-por",
+                        "originalFormatLabel": "SPSS Portable",
+                        "UNF": "UNF:6:MG63BIvFTMRK6Otb0lnKXA==",
+                        "md5": "9925a62c824cb25e39e0172e83267dc1",
+                        "description": ""
+                    }
+                }]
+        }
+    }
+}

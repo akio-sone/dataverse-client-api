@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="text">unpublished api test dataverse</title>
+    <generator uri="http://www.swordapp.org/" version="2.0"/>
+    <entry xml:base="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/PQ1HF3">
+        <id>https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/PQ1HF3</id>
+        <title type="text">test dataset for an unpublished dataverse</title>
+        <link href="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit-media/study/doi:10.5072/FK2/PQ1HF3" rel="edit-media"/>
+    </entry>
+    <entry xml:base="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/I3FFMJ">
+        <id>https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/I3FFMJ</id>
+        <title type="text">2nd study that is not published</title>
+        <link href="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit-media/study/doi:10.5072/FK2/I3FFMJ" rel="edit-media"/>
+    </entry>
+    <dataverseHasBeenReleased xmlns="http://purl.org/net/sword/terms/state">false</dataverseHasBeenReleased>
+</feed>

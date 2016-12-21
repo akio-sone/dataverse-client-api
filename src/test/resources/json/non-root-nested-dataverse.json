@@ -1,0 +1,24 @@
+{
+    "status": "OK",
+    "data": {
+        "id": 55,
+        "alias": "apitest1",
+        "name": "unpublished api test dataverse",
+        "affiliation": "UNC Odum",
+        "dataverseContacts": [{
+                "displayOrder": 0,
+                "contactEmail": "asone@email.unc.edu"
+            }],
+        "permissionRoot": true,
+        "description": "This is the second api test dataverse never to be published for testing purposes",
+        "ownerId": 1,
+        "creationDate": "2016-07-08T14:39:20Z",
+        "creator": {
+            "identifier": "@apitestuser",
+            "displayInfo": {
+                "Title": "api testuser",
+                "email": "asone@email.unc.edu"
+            }
+        }
+    }
+}

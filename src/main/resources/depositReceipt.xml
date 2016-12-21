@@ -1,0 +1,11 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+    <bibliographicCitation xmlns="http://purl.org/dc/terms/">testuser, api, 2016, "another dataset in an unpublished dataverse within an unpublished dataverse", doi:10.5072/FK2/E8IB8Q, Root Dataverse, DRAFT VERSION [UNF:6:ZWIYlMKfx+MHLqGRd3MLuA==]</bibliographicCitation>
+    <generator uri="http://www.swordapp.org/" version="2.0"/>
+    <id>https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/E8IB8Q</id>
+    <link href="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/E8IB8Q" rel="edit"/>
+    <link href="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit/study/doi:10.5072/FK2/E8IB8Q" rel="http://purl.org/net/sword/terms/add"/>
+    <link href="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/edit-media/study/doi:10.5072/FK2/E8IB8Q" rel="edit-media"/>
+    <link href="https://dvn41-akiotest.irss.unc.edu/dvn/api/data-deposit/v1.1/swordv2/statement/study/doi:10.5072/FK2/E8IB8Q" rel="http://purl.org/net/sword/terms/statement" type="application/atom+xml; type=feed"/>
+    <treatment xmlns="http://purl.org/net/sword/terms/">no treatment information available</treatment>
+    <link href="http://dx.doi.org/10.5072/FK2/E8IB8Q" rel="alternate"/>
+</entry>

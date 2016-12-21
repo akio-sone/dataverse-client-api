@@ -1,0 +1,51 @@
+{
+    "status": "OK",
+    "data": [{
+            "id": 24,
+            "identifier": "GKND3V",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/GKND3V",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "publicationDate": "2015-08-14",
+            "type": "dataset"
+        }, {
+            "id": 32,
+            "identifier": "TOB48J",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/TOB48J",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "publicationDate": "2015-08-19",
+            "type": "dataset"
+        }, {
+            "id": 41,
+            "identifier": "KVZHWI",
+            "persistentUrl": "http://dx.doi.org/10.5072/FK2/KVZHWI",
+            "protocol": "doi",
+            "authority": "10.5072/FK2",
+            "publisher": "Root Dataverse",
+            "publicationDate": "2015-08-26",
+            "type": "dataset"
+        }, {
+            "type": "dataverse",
+            "id": 54,
+            "title": "api test dataverse"
+        }, {
+            "type": "dataverse",
+            "id": 49,
+            "title": "Jonathan Crabtree DFC Test Dataverse"
+        }, {
+            "type": "dataverse",
+            "id": 55,
+            "title": "unpublished api test dataverse"
+        }, {
+            "type": "dataverse",
+            "id": 167,
+            "title": "v 4.5.1 test"
+        }, {
+            "type": "dataverse",
+            "id": 2,
+            "title": "WebDAV-irods testing"
+        }]
+}
