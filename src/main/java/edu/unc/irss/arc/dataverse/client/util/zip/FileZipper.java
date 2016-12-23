@@ -1,5 +1,8 @@
 package edu.unc.irss.arc.dataverse.client.util.zip;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystem;
@@ -12,7 +15,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Creates a zip file by using NIO2 API.
@@ -156,4 +161,40 @@ public class FileZipper {
             logger.log(Level.SEVERE, "IOException was thrown", ex);
         }
     }
+    
+    
+    
+    /**
+     * tests whether the file denoted by this pathname string is a zip file.
+     * 
+     * @param pathString
+     * @return {@code true} if the given pathname string points to a zip file ; 
+     *          otherwise {@code false}
+     */
+    public static boolean isZipFile(String pathString) {
+        // null or blank test
+        if (StringUtils.isBlank(pathString)) {
+            return false;
+        }
+        File testFile = new File(pathString);
+        
+        if (testFile.exists() && !testFile.isDirectory()) {
+            try (FileInputStream fis = new FileInputStream(testFile)) {
+                return new ZipInputStream(fis).getNextEntry() != null;
+            } catch (FileNotFoundException ex ) {
+                logger.log(Level.SEVERE, "FileNotFoundException was thrown", ex);
+                return false;
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, "IOException was thrown", ex);
+                return false;
+            }
+        } else {
+            logger.log(Level.INFO, "pathString[{0}] points to a directory",
+                    pathString);
+            return false;
+        }
+    }
+    
+    
+    
 }

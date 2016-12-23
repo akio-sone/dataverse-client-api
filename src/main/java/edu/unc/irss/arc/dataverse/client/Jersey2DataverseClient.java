@@ -959,9 +959,12 @@ public class Jersey2DataverseClient {
 
         return ldf;
     }
-    /**
+    /** 
+     * Upload a zip file to a target dataset. 
      * 
-     * @return 
+     * This method assumes that a client configuration instance has a zip 
+     * file information.
+     * @return a response string
      */
     public String uploadFilesToDataset(){
         if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
