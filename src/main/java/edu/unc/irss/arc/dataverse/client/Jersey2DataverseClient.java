@@ -996,7 +996,7 @@ public class Jersey2DataverseClient {
             
             // checks wheter the file is a zip file
             if (!FileZipper.isZipFile(zipFile)){
-                // the file is not a zip file; try to zip it 
+                // the file is not a zip file; try to zip it as a temp file
                 try {
                     FileZipper fz = new FileZipper();
                     
