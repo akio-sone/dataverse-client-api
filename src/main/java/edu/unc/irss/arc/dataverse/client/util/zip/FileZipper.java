@@ -85,12 +85,15 @@ public class FileZipper {
     }
 
     /**
-     *
-     * @param zipFilename
+     * Creates a zip file whose pathname is denoted by 
+     * {@code zipFilename} from {@code srcPath} with a relative path
+     * {@code relativizeBase}.
+     * 
      * @param srcPath
      * @param relativizeBase
+     * @param zipFilename
      */
-    public void create(String zipFilename, Path srcPath, Path relativizeBase) {
+    public void create(Path srcPath, Path relativizeBase, String zipFilename) {
 
         logger.log(Level.INFO, "srcPath={0}", srcPath);
         logger.log(Level.INFO, "relativizeBase={0}", relativizeBase);
@@ -104,18 +107,22 @@ public class FileZipper {
                     "IOException was thrown from FileZipper#create()", ie);
         }
     }
-/**
- * 
- * @param pp
- * @param p 
- */
-    public void create(Path pp, Path p) {
+    
+    
+    /**
+     * Creates a zip file whose path is specified by the first one from
+     * the second one.
+     * 
+     * @param sourcePath the path to the source file or directory
+     * @param zipPath  the path to the resulting zip file
+     */
+    public void create(Path sourcePath, Path zipPath) {
 
-        try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(p));) {
+        try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(zipPath));) {
 
-            Files.walk(pp).filter(path -> !Files.isDirectory(path)).forEach(path -> {
+            Files.walk(sourcePath).filter(path -> !Files.isDirectory(path)).forEach(path -> {
 
-                String sp = path.toAbsolutePath().toString().replace(pp.toAbsolutePath().toString(), "").replace(path.getFileName().toString(), "").replace("\\", "/");
+                String sp = path.toAbsolutePath().toString().replace(sourcePath.toAbsolutePath().toString(), "").replace(path.getFileName().toString(), "").replace("\\", "/");
 
                 // the following works for dataverse
                 logger.log(Level.INFO, "sp={0}", sp);
@@ -146,6 +153,9 @@ public class FileZipper {
 
     
     /**
+     * Creates a zip file whose pathname is specified by
+     * the second pathname from the source file denoted by the first 
+     * pathname. 
      * 
      * @param sourceDirPath
      * @param zipFilePath 
@@ -165,7 +175,7 @@ public class FileZipper {
     
     
     /**
-     * tests whether the file denoted by this pathname string is a zip file.
+     * Tests whether the file denoted by this pathname string is a zip file.
      * 
      * @param pathString
      * @return {@code true} if the given pathname string points to a zip file ; 
@@ -196,5 +206,33 @@ public class FileZipper {
     }
     
     
-    
+    /**
+     * Tests whether the specified file is a zip file.
+     *
+     * @param payloadFile the file to be uploaded to the target dataset.
+     * @return {@code true} if the given File is a zip file ; 
+     *          otherwise {@code false}
+     */
+    public static boolean isZipFile(File payloadFile) {
+        // null test
+        if (payloadFile == null) {
+            return false;
+        }
+        
+        if (payloadFile.exists() && !payloadFile.isDirectory()) {
+            try (FileInputStream fis = new FileInputStream(payloadFile)) {
+                return new ZipInputStream(fis).getNextEntry() != null;
+            } catch (FileNotFoundException ex ) {
+                logger.log(Level.SEVERE, "FileNotFoundException was thrown", ex);
+                return false;
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, "IOException was thrown", ex);
+                return false;
+            }
+        } else {
+            logger.log(Level.INFO, "File[{0}] a directory; not a zip file",
+                    payloadFile);
+            return false;
+        }
+    }
 }

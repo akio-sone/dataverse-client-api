@@ -12,6 +12,7 @@ import edu.unc.irss.arc.dataverse.client.util.MinimumFieldsForDataverse;
 import edu.unc.irss.arc.dataverse.client.util.dto.DvItem;
 import edu.unc.irss.arc.dataverse.client.util.dto.FileItem;
 import edu.unc.irss.arc.dataverse.client.util.json.Data;
+import edu.unc.irss.arc.dataverse.client.util.zip.FileZipper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,7 +117,7 @@ public class Jersey2DataverseClient {
     private final static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME); 
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         // likely usage cases
         // Person value =
@@ -960,7 +961,7 @@ public class Jersey2DataverseClient {
         return ldf;
     }
     /** 
-     * Upload a zip file to a target dataset. 
+     * Uploads a zip file to a target dataset. 
      * 
      * This method assumes that a client configuration instance has a zip 
      * file information.
@@ -985,12 +986,39 @@ public class Jersey2DataverseClient {
      *
      * @param persistentId
      * @return
+     * @throws java.io.IOException
      */
-    public String addFilesToDataset() {
+    public String addFilesToDataset() throws IOException {
 
         if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
                 StringUtils.isNotBlank(clientConfig.getPersistentId())) {
             File zipFile = new File(clientConfig.getZipFileLocation());
+            
+            // checks wheter the file is a zip file
+            if (!FileZipper.isZipFile(zipFile)){
+                // the file is not a zip file; try to zip it 
+                try {
+                    FileZipper fz = new FileZipper();
+                    
+                    Path sourcePath = Files.createFile(Paths.get(clientConfig.getZipFileLocation()));
+                    Path zipPath = Files.createTempFile("uploadToDataverse", ".zip");
+                    fz.create(sourcePath, zipPath);
+                    zipFile = zipPath.toFile();
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, "IOException was thrown", ex);
+                    throw ex;
+                }
+                
+                
+                
+            } else {
+                logger.log(Level.INFO, "{0} is a zip file", 
+                        clientConfig.getZipFileLocation());
+            }
+            
+            
+            
+            
             return addFilesToDataset(zipFile, clientConfig.getPersistentId());
             
         } else {
