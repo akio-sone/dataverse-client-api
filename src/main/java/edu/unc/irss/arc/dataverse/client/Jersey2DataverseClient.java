@@ -145,7 +145,7 @@ public class Jersey2DataverseClient {
     // ------------------------------------------------------------------------
     
     public String publishDatafile(String persistentId, File file) throws
-            IllegalArgumentException {
+            IllegalArgumentException, IOException {
         if (StringUtils.isBlank(persistentId)) {
             throw new IllegalArgumentException("persistentId should not be blank");
         } else if (persistentId.startsWith("doi:")){
@@ -159,7 +159,7 @@ public class Jersey2DataverseClient {
         return addFilesToDataset(file, persistentId);
     }
     
-    public String publishDatafile(String persistentId, String filename) {
+    public String publishDatafile(String persistentId, String filename) throws IllegalArgumentException, IOException {
         File file = new File(filename);
         return publishDatafile(persistentId, file);
     }
@@ -960,18 +960,19 @@ public class Jersey2DataverseClient {
 
         return ldf;
     }
-    /** 
-     * Uploads a zip file to a target dataset. 
-     * 
-     * This method assumes that a client configuration instance has a zip 
-     * file information.
-     * @return a response string
-     */
-    public String uploadFilesToDataset(){
+
+    
+    // stub code for the for the future Native API
+    private String uploadFilesToDataset() throws IOException{
+
+        
         if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
                 StringUtils.isNotBlank(clientConfig.getPersistentId())) {
             File zipFile = new File(clientConfig.getZipFileLocation());
-            return addFilesToDataset(zipFile, clientConfig.getPersistentId());
+            
+            
+            // TODO replace null with a new method
+            return null;
             
         } else {
             logger.log(Level.SEVERE, "ZipFileLocation and zip-file location must be not blank");
@@ -983,9 +984,10 @@ public class Jersey2DataverseClient {
     
     
     /**
-     *
-     * @param persistentId
-     * @return
+     * Uploads the pre-set zip file to the pre-set target Dataverse 
+     * dataset.  The specified payload file may not be a zip file.
+     * 
+     * @return  the returned response from the Dataverse as as {@code String}
      * @throws java.io.IOException
      */
     public String addFilesToDataset() throws IOException {
@@ -993,6 +995,66 @@ public class Jersey2DataverseClient {
         if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
                 StringUtils.isNotBlank(clientConfig.getPersistentId())) {
             File zipFile = new File(clientConfig.getZipFileLocation());
+            
+            
+            
+            return addFilesToDataset(zipFile, clientConfig.getPersistentId());
+            
+        } else {
+            logger.log(Level.SEVERE, "ZipFileLocation and zip-file location must be not blank");
+            throw new IllegalArgumentException("Zip-file location and PersistentId must be not blank");
+            
+        }
+    }
+    
+    
+    /**
+     * Uploads the pre-specified file to the target Dataverse dataset.
+     * 
+     * @param  persistentId  The persistent id of the target dataset
+     * @return  the returned response from the Dataverse as as {@code String}
+     * @throws java.io.IOException
+     */
+    public String addFilesToDataset(String persistentId) throws IOException {
+
+        if (StringUtils.isBlank(clientConfig.getZipFileLocation())) {
+            logger.log(Level.SEVERE, "ZipFileLocation is not specified");
+            throw new NullPointerException("Zip File Location is not specified");
+        } else {
+//            File zipFile = new File(clientConfig.getZipFileLocation());
+//            return addFilesToDataset(zipFile, persistentId);
+            clientConfig.setPersistentId(persistentId);
+            return addFilesToDataset();
+
+        }
+    }
+
+    /**
+     * Uploads the pre-specified file to the target Dataverse dataset.
+     * 
+     * @param zipFile the file or the directory to be uploaded
+     * @param persistentId  the persistent id of the target dataset
+     * @return  the returned response from the Dataverse as a {@code String}
+     * @throws java.io.IOException
+     */
+    public String addFilesToDataset(java.io.File zipFile, String persistentId) throws IOException {
+        logger.log(Level.INFO, "persistentId={0}", persistentId);
+
+        Response response = null;
+        String returnedResult = null;
+
+        try {
+            
+            // check arguments first
+            if (!zipFile.exists()) {
+                logger.log(Level.INFO, "zip file [{0}] does not exist",
+                        zipFile.getAbsolutePath());
+                throw new IllegalArgumentException("zip file does not exist");
+            } else if (StringUtils.isBlank(persistentId)) {
+                logger.log(Level.INFO, "persistentId is blank");
+                throw new IllegalArgumentException("persistentId is blank");
+            }
+            
             
             // checks wheter the file is a zip file
             if (!FileZipper.isZipFile(zipFile)){
@@ -1016,56 +1078,6 @@ public class Jersey2DataverseClient {
                         clientConfig.getZipFileLocation());
             }
             
-            
-            
-            
-            return addFilesToDataset(zipFile, clientConfig.getPersistentId());
-            
-        } else {
-            logger.log(Level.SEVERE, "ZipFileLocation and zip-file location must be not blank");
-            throw new IllegalArgumentException("Zip-file location and PersistentId must be not blank");
-            
-        }
-    }
-    
-    
-    /**
-     *
-     * @param persistentId
-     * @return
-     */
-    public String addFilesToDataset(String persistentId) {
-
-        if (StringUtils.isBlank(clientConfig.getZipFileLocation())) {
-            logger.log(Level.SEVERE, "ZipFileLocation is not specified");
-            throw new NullPointerException("Zip File Location is not specified");
-        } else {
-            File zipFile = new File(clientConfig.getZipFileLocation());
-            return addFilesToDataset(zipFile, persistentId);
-        }
-    }
-
-    /**
-     *
-     * @param zipFile
-     * @param persistentId
-     * @return
-     */
-    public String addFilesToDataset(java.io.File zipFile, String persistentId) {
-        logger.log(Level.INFO, "persistentId={0}", persistentId);
-
-        Response response = null;
-        String returnedResult = null;
-
-        try {
-            if (!zipFile.exists()) {
-                logger.log(Level.INFO, "zip file [{0}] does not exist",
-                        zipFile.getAbsolutePath());
-                throw new IllegalArgumentException("zip file does not exist");
-            } else if (StringUtils.isBlank(persistentId)) {
-                logger.log(Level.INFO, "persistentId is blank");
-                throw new IllegalArgumentException("persistentId is blank");
-            }
 
             webTarget = client.target(clientConfig.getServerURI()
                     + getSwordApiUri("/study")).path(persistentId);
@@ -1106,101 +1118,26 @@ public class Jersey2DataverseClient {
     
     
     /**
-     *
-     * @param pathToFile  an absolute path as a String
-     * @param persistentId
-     * @return
+     * Uploads the file or the set of files to 
+     * the target Dataverse dataset.  
+     * The specified location may not be a zip file.
+     * 
+     * @param zipFileLocation  the absolute path of the file or directory
+     * @param persistentId  the persistent id of the target dataset
+     * @return  the returned response from the Dataverse as a {@code String}
+     * @throws java.io.IOException
      */
-    public String addFilesToDataset(String pathToFile, String persistentId) {
-        
-        logger.log(Level.INFO, "pathToFile={0}", pathToFile);
+    public String addFilesToDataset(String zipFileLocation, String persistentId) throws IOException {
+        logger.log(Level.INFO, "pathToFile={0}", zipFileLocation);
         logger.log(Level.INFO, "persistentId={0}", persistentId);
-                File zipFile = null;
         
-        Path payloadPath = Paths.get(pathToFile);
-        if (Files.exists(payloadPath)){
-            
-            
-            
-            
-        } else {
-            logger.log(Level.SEVERE, "payload path does not exists", payloadPath);
-            throw new IllegalArgumentException("playload file does not exist");
-        }
+        File zipFile = new File(zipFileLocation);
         
+        return addFilesToDataset(zipFile, persistentId);
         
-
-
-        Response response = null;
-        String returnedResult = null;
-
-        try {
-            if (zipFile == null || !zipFile.exists()) {
-                logger.log(Level.INFO, "zip file [{0}] does not exist",
-                        zipFile.getAbsolutePath());
-                throw new IllegalArgumentException("zip file does not exist");
-            } else if (StringUtils.isBlank(persistentId)) {
-                logger.log(Level.INFO, "persistentId is blank");
-                throw new IllegalArgumentException("persistentId is blank");
-            }
-
-            webTarget = client.target(clientConfig.getServerURI()
-                    + getSwordApiUri("/study")).path(persistentId);
-
-            response = webTarget
-                    .request()
-                    .header("Content-Disposition", "filename=" + zipFile.getName())
-                    .header("Content-Type", "application/zip")
-                    .header("Packaging", "http://purl.org/net/sword/package/SimpleZip")
-                    //                    .header("Content-MD5", "d1a80c8a550c515ef5c697d16516dbc0")
-                    .post(Entity.entity(zipFile, MediaType.APPLICATION_OCTET_STREAM));
-
-            int statusCode = response.getStatus();
-            returnedResult = response.readEntity(String.class);
-
-            logger.log(Level.INFO, "response.status={0}", statusCode);
-            logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
-
-            if (statusCode == 201) {
-                logger.log(Level.INFO, "adding files to a dataset was successful");
-            } else {
-                // parse the returned code; Normal case 
-                logger.log(Level.SEVERE, "adding files to a dataset failed: status code={0}",
-                        statusCode);
-            }
-
-        } catch (IllegalArgumentException ex) {
-            logger.log(Level.SEVERE, "arguments are not valid", ex);
-        } finally {
-            if (response != null) {
-                response.close();
-            }
-            client.close();
-        }
-        return returnedResult;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
 
     /**
      *
