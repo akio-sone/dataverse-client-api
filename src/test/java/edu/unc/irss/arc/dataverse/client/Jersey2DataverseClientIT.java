@@ -7,13 +7,14 @@ import edu.unc.irss.arc.dataverse.client.util.MinimumFieldsForDataverse;
 import edu.unc.irss.arc.dataverse.client.util.dto.DvItem;
 import edu.unc.irss.arc.dataverse.client.util.dto.FileItem;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -99,9 +100,10 @@ public class Jersey2DataverseClientIT {
 
     /**
      * Test of main method, of class Jersey2DataverseClient.
+     * @throws java.io.IOException
      */
     @Test
-    public void testMain() {
+    public void testMain() throws IOException {
         System.out.println("main");
         String[] args = null;
         Jersey2DataverseClient.main(args);
@@ -113,7 +115,7 @@ public class Jersey2DataverseClientIT {
      * Test of publishDatafile method, of class Jersey2DataverseClient.
      */
     @Test
-    public void testPublishDatafile_String_File() {
+    public void testPublishDatafile_String_File() throws IllegalArgumentException, IOException {
         System.out.println("publishDatafile");
         String persistentId = "";
         File file = null;
@@ -129,7 +131,7 @@ public class Jersey2DataverseClientIT {
      * Test of publishDatafile method, of class Jersey2DataverseClient.
      */
     @Test
-    public void testPublishDatafile_String_String() {
+    public void testPublishDatafile_String_String() throws IllegalArgumentException, IOException {
         System.out.println("publishDatafile");
         String persistentId = "";
         String filename = "";
@@ -355,7 +357,7 @@ public class Jersey2DataverseClientIT {
      * Test of addFilesToDataset method, of class Jersey2DataverseClient.
      */
     @Test
-    public void testAddFilesToDataset_0args() {
+    public void testAddFilesToDataset_0args() throws IOException {
         System.out.println("addFilesToDataset");
         Jersey2DataverseClient instance = null;
         String expResult = "";
@@ -369,7 +371,7 @@ public class Jersey2DataverseClientIT {
      * Test of addFilesToDataset method, of class Jersey2DataverseClient.
      */
     @Test
-    public void testAddFilesToDataset_String() {
+    public void testAddFilesToDataset_String() throws IOException {
         System.out.println("addFilesToDataset");
         String persistentId = "";
         Jersey2DataverseClient instance = null;
@@ -384,7 +386,7 @@ public class Jersey2DataverseClientIT {
      * Test of addFilesToDataset method, of class Jersey2DataverseClient.
      */
     @Test
-    public void testAddFilesToDataset_File_String() {
+    public void testAddFilesToDataset_File_String() throws IOException {
         System.out.println("addFilesToDataset");
         File zipFile = null;
         String persistentId = "";

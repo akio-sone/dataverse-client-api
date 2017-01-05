@@ -119,6 +119,48 @@ public class Jersey2DataverseClient {
     
     public static void main(String[] args) throws IOException {
         
+        if (args.length != 5) {
+            logger.log(Level.SEVERE, "Three arguments: dataverse_URL, Api_key, dataverse_Alias are expected dataset_Id file_location");
+            throw new IllegalArgumentException("The number of arguments must be 5.");
+        }
+        
+        for (int i=0; i< args.length; i++){
+            System.out.println("arg["+i+"]:="+args[i]);
+        }
+        
+        
+        
+        for (String arg: args){
+            logger.log(Level.INFO, "arg={0}", arg);
+        }
+        
+        if (StringUtils.isBlank(args[0])) {
+            logger.log(Level.SEVERE, "dataverse URL should not be blank");
+            throw new IllegalArgumentException("dataverse URL should not be blank");
+        }
+        
+        if (StringUtils.isBlank(args[1])) {
+            logger.log(Level.SEVERE, "API key should not be blank");
+            throw new IllegalArgumentException("API Key should not be blank");
+        }
+        
+        if (StringUtils.isBlank(args[2])) {
+            logger.log(Level.SEVERE, "dataverse alias should not be blank");
+            throw new IllegalArgumentException("dataverse alias should not be blank");
+        }
+        
+        if (StringUtils.isBlank(args[3])) {
+            logger.log(Level.SEVERE, "dataset Id should not be blank");
+            throw new IllegalArgumentException("dataset Id should not be blank");
+        }
+        
+        if (StringUtils.isBlank(args[4])) {
+            logger.log(Level.SEVERE, "file location should not be blank");
+            throw new IllegalArgumentException("file location should not be blank");
+        }
+        
+        
+        
         // likely usage cases
         // Person value =
         // GenericBuilder.of(Person::new).with(Person::setName, "Otto").with(Person::setAge, 5).build();
@@ -131,9 +173,18 @@ public class Jersey2DataverseClient {
                 .with(DataverseClientConfig::setPersistentId, args[3])
                 .with(DataverseClientConfig::setZipFileLocation, args[4])
                 .build();
+        
+        
+        System.out.println("server="+args[0]);
+        System.out.println("apikey="+args[1]);
+        
+        System.out.println("DataverseAlias="+args[2]);
+        System.out.println("setPersistentId="+args[3]);
+        System.out.println("setPersistentId="+args[4]);
+        
         // persistentId and zip-file location are stored in the config instance
         Jersey2DataverseClient dataverseClient = new Jersey2DataverseClient(clientConfig);
-        dataverseClient.addFilesToDataset();
+        //dataverseClient.addFilesToDataset();
         
         
         

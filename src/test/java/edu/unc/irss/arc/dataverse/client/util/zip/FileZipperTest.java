@@ -5,10 +5,10 @@ package edu.unc.irss.arc.dataverse.client.util.zip;
 import java.nio.file.Path;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -45,7 +45,7 @@ public class FileZipperTest {
         Path srcPath = null;
         Path relativizeBase = null;
         FileZipper instance = new FileZipper();
-        instance.create(zipFilename, srcPath, relativizeBase);
+        instance.create(srcPath, relativizeBase, zipFilename);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
