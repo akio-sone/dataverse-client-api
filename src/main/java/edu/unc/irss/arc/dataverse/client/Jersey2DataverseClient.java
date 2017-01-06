@@ -128,7 +128,7 @@ public class Jersey2DataverseClient {
             System.out.println("arg["+i+"]:="+args[i]);
         }
         
-        
+        System.out.println("DV_API_KEY=" + System.getProperty("DV_API_KEY"));
         
         for (String arg: args){
             logger.log(Level.INFO, "arg={0}", arg);
