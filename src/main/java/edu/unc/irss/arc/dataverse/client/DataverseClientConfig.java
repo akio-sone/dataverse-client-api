@@ -354,6 +354,11 @@ public class DataverseClientConfig {
         
         return "https://"+ server;
     }
+
+    @Override
+    public String toString() {
+        return "DataverseClientConfig{" + "server=" + server + ", target=" + target + ", path=" + path + ", apiKey=" + apiKey + ", persistentId=" + persistentId + ", apiVersion=" + apiVersion + ", dataverseAlias=" + dataverseAlias + ", dataverseId=" + dataverseId + ", groupAlias=" + groupAlias + ", groupId=" + groupId + ", name=" + name + ", zipFileLocation=" + zipFileLocation + ", requestURI=" + requestURI + ", nativeApiVersion=" + nativeApiVersion + ", swordApiVersion=" + swordApiVersion + '}';
+    }
     
     
 

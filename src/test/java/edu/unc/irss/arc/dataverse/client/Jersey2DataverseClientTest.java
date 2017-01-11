@@ -5,18 +5,23 @@
  */
 package edu.unc.irss.arc.dataverse.client;
 
+import edu.unc.irss.arc.dataverse.client.util.GenericBuilder;
 import edu.unc.irss.arc.dataverse.client.util.MinimumFieldsForDataset;
 import edu.unc.irss.arc.dataverse.client.util.MinimumFieldsForDataverse;
 import edu.unc.irss.arc.dataverse.client.util.dto.DvItem;
 import edu.unc.irss.arc.dataverse.client.util.dto.FileItem;
 import java.io.File;
+import java.net.URL;
 import java.util.List;
+import static org.hamcrest.Matchers.*;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
 
 /**
  *
@@ -24,16 +29,21 @@ import org.junit.Test;
  */
 public class Jersey2DataverseClientTest {
     
+    
+    DataverseClientConfig clientConfig;
+    
+    Jersey2DataverseClient dataverseClient;
+    
     public Jersey2DataverseClientTest() {
     }
     
+    
+    
+    
+    
+    
     @BeforeClass
     public static void setUpClass() {
-        
-        System.out.println("jvm-injected test:server=" + System.getProperty("server"));
-        System.out.println("jvm-injected test:apikey=" + System.getProperty("apiKey"));
-        
-        
     }
     
     @AfterClass
@@ -42,6 +52,32 @@ public class Jersey2DataverseClientTest {
     
     @Before
     public void setUp() {
+        
+        
+        System.out.println("setUpClass:server==" + System.getProperty("server"));
+        System.out.println("setUpClass:apikey=" + System.getProperty("apiKey"));
+        
+        String server=System.getProperty("server");
+        String apiKey=System.getProperty("apiKey");
+        String dataverseAlias=System.getProperty("dataverseAlias");
+        String persistentId=System.getProperty("persistentId");
+        String zipFileLocation=System.getProperty("zipFileLocation");
+        
+        
+        clientConfig = GenericBuilder
+                .of(DataverseClientConfig::new)
+                .with(DataverseClientConfig::setServer, server)
+                .with(DataverseClientConfig::setApiKey, apiKey)
+                .with(DataverseClientConfig::setDataverseAlias, dataverseAlias)
+                .with(DataverseClientConfig::setPersistentId, persistentId)
+                .with(DataverseClientConfig::setZipFileLocation, zipFileLocation)
+                .build();
+
+        
+        dataverseClient = new Jersey2DataverseClient(clientConfig);
+        
+        
+        
     }
     
     @After
@@ -104,26 +140,54 @@ public class Jersey2DataverseClientTest {
 
     /**
      * Test of main method, of class Jersey2DataverseClient.
+     * @throws java.lang.Exception
      */
     
     @Test
     public void testMain() throws Exception {
         System.out.println("testing the main method");
+        /*
+        
                 System.out.println("testMain:server=" + System.getProperty("server"));
         System.out.println("testMain:apikey=" + System.getProperty("apiKey"));
-        
+
                 String server=System.getProperty("server");
                 String apiKey=System.getProperty("apiKey");
                 String dataverseAlias=System.getProperty("dataverseAlias");
                 String persistentId=System.getProperty("persistentId");
                 String zipFileLocation=System.getProperty("zipFileLocation");
-                
+
                 
 
         String[] args = new String[]{server, apiKey, dataverseAlias, 
             persistentId, zipFileLocation};
         Jersey2DataverseClient.main(args);
-
+        */
+        String zipFilelocation = clientConfig.getZipFileLocation();
+        
+        System.out.println("zipFilelocation="+zipFilelocation);
+        File zipFile = new File(File.separator + "src" + File.separator + "test"
+    + File.separator + "resources" +File.separator +zipFilelocation);
+        if (zipFile.exists()){
+            System.out.println("zip file exists: size="+zipFile.length());
+        } else {
+            System.out.println("zip file does not exists");
+        }
+        
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(zipFilelocation).getFile());
+        System.out.println(file.getAbsolutePath());
+        assertThat(file.exists(), is(true));
+        
+        //assertThat(zipFile.exists(), is(true));
+        URL url = this.getClass().getResource("/"+zipFilelocation);
+        File testFile = new File(url.getFile());
+        if (testFile.exists()){
+            System.out.println("abs path="+file.getAbsolutePath());
+            System.out.println("test file exists: size="+testFile.length());
+        } else {
+            System.out.println("test file does not exists");
+        }
     }
 
     /**
@@ -345,15 +409,16 @@ public class Jersey2DataverseClientTest {
 
     /**
      * Test of addFilesToDataset method, of class Jersey2DataverseClient.
+     * @throws java.lang.Exception
      */
     @Ignore
     @Test
     public void testAddFilesToDataset_0args() throws Exception {
-        System.out.println("addFilesToDataset");
-        Jersey2DataverseClient instance = null;
-        String expResult = "";
-        String result = instance.addFilesToDataset();
-
+        System.out.println("addFilesToDataset  0 arguments");
+        // requests data are all in the config instance
+       
+        String result = dataverseClient.addFilesToDataset();
+        System.out.println("result"+result);
     }
 
     /**
@@ -396,6 +461,9 @@ public class Jersey2DataverseClientTest {
         String persistentId = "";
         Jersey2DataverseClient instance = null;
         String expResult = "";
+        
+        
+        
         String result = instance.addFilesToDataset(zipFileLocation, persistentId);
 
     }
