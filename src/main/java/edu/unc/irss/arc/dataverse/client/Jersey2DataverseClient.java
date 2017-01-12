@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -1113,7 +1112,7 @@ public class Jersey2DataverseClient {
                 try {
                     FileZipper fz = new FileZipper();
                     
-                    Path sourcePath = Files.createFile(Paths.get(clientConfig.getZipFileLocation()));
+                    Path sourcePath = zipFile.toPath();
                     Path zipPath = Files.createTempFile("uploadToDataverse", ".zip");
                     fz.create(sourcePath, zipPath);
                     zipFile = zipPath.toFile();
@@ -1129,7 +1128,9 @@ public class Jersey2DataverseClient {
                         clientConfig.getZipFileLocation());
             }
             
-
+            
+            logger.log(Level.INFO, "serverURI={0}", clientConfig.getServerURI());
+            logger.log(Level.INFO, "zip file path={0}", zipFile.getAbsolutePath());
             webTarget = client.target(clientConfig.getServerURI()
                     + getSwordApiUri("/study")).path(persistentId);
 

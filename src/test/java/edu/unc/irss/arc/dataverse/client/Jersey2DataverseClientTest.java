@@ -10,6 +10,7 @@ import edu.unc.irss.arc.dataverse.client.util.MinimumFieldsForDataset;
 import edu.unc.irss.arc.dataverse.client.util.MinimumFieldsForDataverse;
 import edu.unc.irss.arc.dataverse.client.util.dto.DvItem;
 import edu.unc.irss.arc.dataverse.client.util.dto.FileItem;
+import edu.unc.irss.arc.dataverse.client.util.xml.AtomfeedParser;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -145,7 +146,7 @@ public class Jersey2DataverseClientTest {
     
     @Test
     public void testMain() throws Exception {
-        System.out.println("testing the main method");
+        System.out.println("\n\ntesting the main method");
         /*
         
                 System.out.println("testMain:server=" + System.getProperty("server"));
@@ -164,30 +165,46 @@ public class Jersey2DataverseClientTest {
         Jersey2DataverseClient.main(args);
         */
         String zipFilelocation = clientConfig.getZipFileLocation();
-        
+        // 1st test: using a File instance with a relative path
         System.out.println("zipFilelocation="+zipFilelocation);
-        File zipFile = new File(File.separator + "src" + File.separator + "test"
-    + File.separator + "resources" +File.separator +zipFilelocation);
-        if (zipFile.exists()){
-            System.out.println("zip file exists: size="+zipFile.length());
-        } else {
-            System.out.println("zip file does not exists");
-        }
+        // File.separator +
+        // +"testDataFiles"+ File.separator + "images"+File.separator
+        File zipFile = new File( "src" + File.separator + "test"
+        + File.separator + "resources" +File.separator + zipFilelocation);
+        System.out.println("zipFile abs path="+zipFile.getAbsolutePath());
         
+        assertThat("zipFile exists", zipFile.exists(), is(true));
+        
+//        if (zipFile.exists()){
+//            System.out.println("zip file exists: size="+zipFile.length());
+//        } else {
+//            System.out.println("zip file does not exists");
+//        }
+        
+        
+        // 2nd test: using class loader
+//        zipFilelocation ="testDataFiles/images/" + zipFilelocation;
+        System.out.println("zipFilelocation="+zipFilelocation);
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(zipFilelocation).getFile());
-        System.out.println(file.getAbsolutePath());
-        assertThat(file.exists(), is(true));
+        System.out.println("abs path="+file.getAbsolutePath());
+        assertThat("file exists", file.exists(), is(true));
         
-        //assertThat(zipFile.exists(), is(true));
+        
+        
+        // 3rd test: using url
         URL url = this.getClass().getResource("/"+zipFilelocation);
         File testFile = new File(url.getFile());
-        if (testFile.exists()){
-            System.out.println("abs path="+file.getAbsolutePath());
-            System.out.println("test file exists: size="+testFile.length());
-        } else {
-            System.out.println("test file does not exists");
-        }
+        
+        assertThat("testFile exists", testFile.exists(), is(true));
+        
+        
+//        if (testFile.exists()){
+//            System.out.println("abs path="+file.getAbsolutePath());
+//            System.out.println("test file exists: size="+testFile.length());
+//        } else {
+//            System.out.println("test file does not exists");
+//        }
     }
 
     /**
@@ -411,14 +428,37 @@ public class Jersey2DataverseClientTest {
      * Test of addFilesToDataset method, of class Jersey2DataverseClient.
      * @throws java.lang.Exception
      */
-    @Ignore
+    
     @Test
     public void testAddFilesToDataset_0args() throws Exception {
-        System.out.println("addFilesToDataset  0 arguments");
+        System.out.println("\n\naddFilesToDataset  0 arguments");
+        
         // requests data are all in the config instance
-       
-        String result = dataverseClient.addFilesToDataset();
-        System.out.println("result"+result);
+        System.out.println("client config="+clientConfig);
+        System.out.println("zip file info="+clientConfig.getZipFileLocation());
+        System.out.println("datasetId="+clientConfig.getPersistentId());
+        
+//        assertThat("zip file info", clientConfig.getZipFileLocation(), is(equalTo(System.getProperty("zipFileLocation"))));
+                ClassLoader classLoader = getClass().getClassLoader();
+//        File file = new File(classLoader.getResource(clientConfig.getZipFileLocation()).getFile());
+        String absFilePath = (new File(classLoader.getResource(clientConfig.getZipFileLocation()).getFile())).getAbsolutePath();
+        
+        System.out.println("file path info: abs ="+absFilePath);
+        clientConfig.setZipFileLocation(absFilePath);
+        
+        System.out.println("zip file info="+clientConfig.getZipFileLocation());
+        assertThat("dataset info=", clientConfig.getPersistentId(), is(equalTo(System.getProperty("persistentId"))));
+        
+        
+        String receipt = dataverseClient.addFilesToDataset();
+        System.out.println("deposit receipt="+receipt);
+        
+        AtomfeedParser parser = new AtomfeedParser();
+        String pid = parser.parseDepositReceipt(receipt).getPersistentId();
+        System.out.println("pid="+pid);
+        assertThat("check the returned persistentId", clientConfig.getPersistentId(), is(equalTo(pid)));
+        
+        
     }
 
     /**

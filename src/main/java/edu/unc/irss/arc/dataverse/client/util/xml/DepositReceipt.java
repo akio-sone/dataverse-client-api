@@ -28,6 +28,9 @@ public class DepositReceipt {
         this.links = links;
     }
 
+    public DepositReceipt() {
+    }
+
     
     
         private String bibliographicCitation;
@@ -71,6 +74,15 @@ public class DepositReceipt {
         this.id = id;
     }
 
+    
+    /**
+     * Get the persistent Id of the target dataset
+     * @return the value of the persistent Id
+     */
+    public String getPersistentId(){
+        return getId().split("/study/")[1];
+    }
+    
     
     
     
