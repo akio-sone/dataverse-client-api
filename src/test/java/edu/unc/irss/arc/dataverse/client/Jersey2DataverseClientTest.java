@@ -35,6 +35,11 @@ public class Jersey2DataverseClientTest {
     
     Jersey2DataverseClient dataverseClient;
     
+    String dataverseId;
+    String datasetId;
+    String datafileId;
+    
+    
     public Jersey2DataverseClientTest() {
     }
     
@@ -55,8 +60,8 @@ public class Jersey2DataverseClientTest {
     public void setUp() {
         
         
-        System.out.println("setUpClass:server==" + System.getProperty("server"));
-        System.out.println("setUpClass:apikey=" + System.getProperty("apiKey"));
+        System.out.println("setUp:server==" + System.getProperty("server"));
+        System.out.println("setUp:apikey=" + System.getProperty("apiKey"));
         
         String server=System.getProperty("server");
         String apiKey=System.getProperty("apiKey");
@@ -77,8 +82,12 @@ public class Jersey2DataverseClientTest {
         
         dataverseClient = new Jersey2DataverseClient(clientConfig);
         
-        
-        
+        System.out.println("setUp:dataverseId=" + System.getProperty("dataverseId"));
+        datasetId=System.getProperty("dataverseId");
+        System.out.println("setUp:datasetId=" + System.getProperty("datasetId"));
+        datasetId=System.getProperty("datasetId");
+        System.out.println("setUp:datafileId=" + System.getProperty("datafileId"));
+        datafileId=System.getProperty("datafileId");
     }
     
     @After
@@ -267,11 +276,13 @@ public class Jersey2DataverseClientTest {
     @Ignore
     @Test
     public void testRetrieveDataverseContentsByDataverseId() {
-        System.out.println("retrieveDataverseContentsByDataverseId");
-        Long dataverseId = null;
-        Jersey2DataverseClient instance = null;
+        System.out.println("\n\ntesting retrieveDataverseContentsByDataverseId");
+        Long dvId = Long.parseLong(dataverseId);
+
         String expResult = "";
-        String result = instance.retrieveDataverseContentsByDataverseId(dataverseId);
+        String result = dataverseClient.retrieveDataverseContentsByDataverseId(dvId);
+        List<DvItem> listDI = dataverseClient.parseDataverseContentsFromString(result);
+        
     }
 
     /**
@@ -380,7 +391,7 @@ public class Jersey2DataverseClientTest {
     @Test
     public void testRetrieveDatasetContentsByDatasetId() {
         System.out.println("retrieveDatasetContentsByDatasetId");
-        String datasetId = "";
+
         Jersey2DataverseClient instance = null;
         String expResult = "";
         String result = instance.retrieveDatasetContentsByDatasetId(datasetId);
@@ -431,16 +442,14 @@ public class Jersey2DataverseClientTest {
     
     @Test
     public void testAddFilesToDataset_0args() throws Exception {
-        System.out.println("\n\naddFilesToDataset  0 arguments");
+        System.out.println("\n\ntesting addFilesToDataset  0 arguments");
         
         // requests data are all in the config instance
         System.out.println("client config="+clientConfig);
         System.out.println("zip file info="+clientConfig.getZipFileLocation());
         System.out.println("datasetId="+clientConfig.getPersistentId());
         
-//        assertThat("zip file info", clientConfig.getZipFileLocation(), is(equalTo(System.getProperty("zipFileLocation"))));
-                ClassLoader classLoader = getClass().getClassLoader();
-//        File file = new File(classLoader.getResource(clientConfig.getZipFileLocation()).getFile());
+        ClassLoader classLoader = getClass().getClassLoader();
         String absFilePath = (new File(classLoader.getResource(clientConfig.getZipFileLocation()).getFile())).getAbsolutePath();
         
         System.out.println("file path info: abs ="+absFilePath);
@@ -555,12 +564,15 @@ public class Jersey2DataverseClientTest {
     @Ignore
     @Test
     public void testDeleteDatafile() {
-        System.out.println("deleteDatafile");
-        String fileId = "";
-        Jersey2DataverseClient instance = null;
-        instance.deleteDatafile(fileId);
-        // TODO review the generated test code and remove the default call to fail.
-
+        System.out.println("\n\n testing deleteDatafile");
+        
+        // A fileId may be extracted from the metadata of its parent dataset;
+        String fileId = datafileId;
+        System.out.println("datafileId to be deleted="+fileId);
+        dataverseClient.deleteDatafile(fileId);
+        // one way to check the above deletion is whether the fileid exists in
+        // the list of datafiles under a dataset
+        
     }
     
 }

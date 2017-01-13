@@ -1092,6 +1092,8 @@ public class Jersey2DataverseClient {
 
         Response response = null;
         String returnedResult = null;
+        
+        boolean isOriginalZip = true;
 
         try {
             
@@ -1113,7 +1115,7 @@ public class Jersey2DataverseClient {
                     FileZipper fz = new FileZipper();
                     
                     Path sourcePath = zipFile.toPath();
-                    Path zipPath = Files.createTempFile("uploadToDataverse", ".zip");
+                    Path zipPath = Files.createTempFile("uploadToDataverse_", ".zip");
                     fz.create(sourcePath, zipPath);
                     zipFile = zipPath.toFile();
                 } catch (IOException ex) {
@@ -1121,7 +1123,7 @@ public class Jersey2DataverseClient {
                     throw ex;
                 }
                 
-                
+                isOriginalZip=false;
                 
             } else {
                 logger.log(Level.INFO, "{0} is a zip file", 
@@ -1163,6 +1165,11 @@ public class Jersey2DataverseClient {
                 response.close();
             }
             client.close();
+        }
+        
+        if (!isOriginalZip){
+            logger.log(Level.INFO, "A temporarily crated zip file ({0}) will be delted on exit", zipFile.getAbsolutePath());
+            zipFile.deleteOnExit();
         }
         return returnedResult;
     }
@@ -1342,10 +1349,10 @@ public class Jersey2DataverseClient {
      * @param fileId
      */
     public void deleteDatafile(String fileId) {
-        // requirement: get file id, and dataset id
+        // requirement: get file id
         logger.log(Level.INFO, "deleting a file whose id={0}", fileId);
         Response response = null;
-//          // emulates a curl-based request
+        // emulates a curl-based request
         // curl -u $API_TOKEN: -X DELETE
         // https://$HOSTNAME/dvn/api/data-deposit/v1.1/swordv2/edit-media/file/123
 
