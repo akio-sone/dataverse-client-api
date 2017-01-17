@@ -206,7 +206,7 @@ public class File {
 
     @Override
     public String toString() {
-        return "File{" + "label=" + label + ", version=" + version + ", datasetVersionId=" + datasetVersionId + ", datafile=" + datafile + ", additionalProperties=" + additionalProperties + '}';
+        return "File={" + "label=" + label + ", version=" + version + ", datasetVersionId=" + datasetVersionId + ", datafile=" + datafile + ", additionalProperties=" + additionalProperties + '}';
     }
 
 }

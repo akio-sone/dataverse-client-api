@@ -2,17 +2,15 @@
  */
 package edu.unc.irss.arc.dataverse.client.util.json;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-//import org.apache.commons.lang3.builder.ToStringBuilder;
-
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Generated;
 /**
  *
  * @author Akio Sone, Univ, of North Carolina at Chapel Hill, H.W. Odum Inst.
@@ -315,7 +313,7 @@ public class Datafile {
 
     @Override
     public String toString() {
-        return "Datafile{" + "id=" + id + ", filename=" + filename + ", contentType=" + contentType + ", storageIdentifier=" + storageIdentifier + ", originalFileFormat=" + originalFileFormat + ", originalFormatLabel=" + originalFormatLabel + ", uNF=" + uNF + ", md5=" + md5 + ", additionalProperties=" + additionalProperties + '}';
+        return "Datafile={" + "id=" + id + ", filename=" + filename + ", contentType=" + contentType + ", storageIdentifier=" + storageIdentifier + ", originalFileFormat=" + originalFileFormat + ", originalFormatLabel=" + originalFormatLabel + ", uNF=" + uNF + ", md5=" + md5 + ", additionalProperties=" + additionalProperties + '}';
     }
 
     /**

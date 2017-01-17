@@ -112,7 +112,7 @@ public class FileItem {
 
     @Override
     public String toString() {
-        return "Datafile{" + "id=" + id + ", filename=" + filename + ", storageIdentifier=" + storageIdentifier + ", contentType=" + contentType + '}';
+        return "Datafile={" + "id=" + id + ", filename=" + filename + ", storageIdentifier=" + storageIdentifier + ", contentType=" + contentType + '}';
     }
 
     

@@ -3,7 +3,10 @@ package edu.unc.irss.arc.dataverse.client;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.TypeRef;
+import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
+import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import edu.unc.irss.arc.dataverse.client.util.GenericBuilder;
@@ -20,8 +23,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
@@ -46,6 +51,34 @@ public class Jersey2DataverseClient {
     private static final Logger logger
             = Logger.getLogger(Jersey2DataverseClient.class.getName());
 
+    
+    // the following block is required for using jsonpath
+    static {
+        Configuration.setDefaults(new Configuration.Defaults() {
+            private final JsonProvider jsonProvider = new JacksonJsonProvider();
+            private final MappingProvider mappingProvider = new JacksonMappingProvider();
+            private final Set<Option> options = EnumSet.noneOf(Option.class);
+
+            @Override
+            public JsonProvider jsonProvider() {
+                return jsonProvider;
+            }
+
+            @Override
+            public MappingProvider mappingProvider() {
+                return mappingProvider;
+            }
+
+            @Override
+            public Set<Option> options() {
+                return options;
+            }
+        });
+    }
+
+    
+    
+    
     private DataverseClientConfig clientConfig;
 
     private WebTarget webTarget;

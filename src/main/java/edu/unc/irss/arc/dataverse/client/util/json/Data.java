@@ -322,7 +322,7 @@ public class Data {
 
     @Override
     public String toString() {
-        return "Data{" + "id=" + id + ", identifier=" + identifier + ", persistentUrl=" + persistentUrl + ", protocol=" + protocol + ", authority=" + authority + ", publisher=" + publisher + ", type=" + type + ", title=" + title + '}';
+        return "Data={" + "id=" + id + ", identifier=" + identifier + ", persistentUrl=" + persistentUrl + ", protocol=" + protocol + ", authority=" + authority + ", publisher=" + publisher + ", type=" + type + ", title=" + title + '}';
     }
 
 //    @Override

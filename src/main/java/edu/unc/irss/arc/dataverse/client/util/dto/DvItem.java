@@ -112,7 +112,7 @@ public class DvItem {
 
     @Override
     public String toString() {
-        return "DvItem{" + "id=" + id + ", type=" + type + ", title=" + title + ", persistentId=" + persistentId + '}';
+        return "DvItem={" + "id=" + id + ", type=" + type + ", title=" + title + ", persistentId=" + persistentId + '}';
     }
 
     

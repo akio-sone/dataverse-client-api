@@ -36,9 +36,10 @@ public class Jersey2DataverseClientTest {
     Jersey2DataverseClient dataverseClient;
     
     String dataverseId;
+    String dataverseAlias;
     String datasetId;
     String datafileId;
-    
+
     
     public Jersey2DataverseClientTest() {
     }
@@ -65,7 +66,7 @@ public class Jersey2DataverseClientTest {
         
         String server=System.getProperty("server");
         String apiKey=System.getProperty("apiKey");
-        String dataverseAlias=System.getProperty("dataverseAlias");
+        dataverseAlias=System.getProperty("dataverseAlias");
         String persistentId=System.getProperty("persistentId");
         String zipFileLocation=System.getProperty("zipFileLocation");
         
@@ -81,8 +82,10 @@ public class Jersey2DataverseClientTest {
 
         
         dataverseClient = new Jersey2DataverseClient(clientConfig);
+        System.out.println("setUp:dataverseAlias=" + dataverseAlias);
         
         System.out.println("setUp:dataverseId=" + System.getProperty("dataverseId"));
+        dataverseId = System.getProperty("dataverseId");
         datasetId=System.getProperty("dataverseId");
         System.out.println("setUp:datasetId=" + System.getProperty("datasetId"));
         datasetId=System.getProperty("datasetId");
@@ -152,7 +155,7 @@ public class Jersey2DataverseClientTest {
      * Test of main method, of class Jersey2DataverseClient.
      * @throws java.lang.Exception
      */
-    
+    @Ignore
     @Test
     public void testMain() throws Exception {
         System.out.println("\n\ntesting the main method");
@@ -260,29 +263,42 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDataverseContentsByDataverseAlias method, of class Jersey2DataverseClient.
      */
-    @Ignore
+    
     @Test
     public void testRetrieveDataverseContentsByDataverseAlias() {
-        System.out.println("retrieveDataverseContentsByDataverseAlias");
-        String dataverseAlias = "";
-        Jersey2DataverseClient instance = null;
-        String expResult = "";
-        String result = instance.retrieveDataverseContentsByDataverseAlias(dataverseAlias);
+        System.out.println("\n\ntesting retrieveDataverseContentsByDataverseAlias");
+        //String dataverseAlias = "";
+        //Jersey2DataverseClient instance = null;
+        //String expResult = "";
+        //String result = instance.retrieveDataverseContentsByDataverseAlias(dataverseAlias);
+        
+        System.out.println("dataverseAlias="+dataverseAlias);
+        String result = dataverseClient.retrieveDataverseContentsByDataverseAlias(dataverseAlias);
+        System.out.println("result="+result);
+        List<DvItem> listDI = dataverseClient.parseDataverseContentsFromString(result);
+        System.out.println("listDI.size="+listDI.size());
+        assertThat("how many dataverse objects in this dataverse", listDI, hasSize(equalTo(10)));
+        assertThat("how many dataverse objects in this dataverse", listDI.size(), equalTo(10)); 
+        
+        
     }
 
     /**
      * Test of retrieveDataverseContentsByDataverseId method, of class Jersey2DataverseClient.
      */
-    @Ignore
+    
     @Test
     public void testRetrieveDataverseContentsByDataverseId() {
         System.out.println("\n\ntesting retrieveDataverseContentsByDataverseId");
         Long dvId = Long.parseLong(dataverseId);
-
-        String expResult = "";
+        System.out.println("dataverseId="+dataverseId);
         String result = dataverseClient.retrieveDataverseContentsByDataverseId(dvId);
+        System.out.println("result="+result);
         List<DvItem> listDI = dataverseClient.parseDataverseContentsFromString(result);
-        
+        System.out.println("listDI.size="+listDI.size());
+        assertThat("how many dataverse objects in this dataverse", listDI, hasSize(equalTo(10)));
+        assertThat("how many dataverse objects in this dataverse", listDI.size(), equalTo(10));
+        //assertThat();  title
     }
 
     /**
@@ -387,14 +403,18 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDatasetContentsByDatasetId method, of class Jersey2DataverseClient.
      */
-    @Ignore
+    
     @Test
     public void testRetrieveDatasetContentsByDatasetId() {
-        System.out.println("retrieveDatasetContentsByDatasetId");
+        System.out.println("\n\nretrieveDatasetContentsByDatasetId");
 
-        Jersey2DataverseClient instance = null;
-        String expResult = "";
-        String result = instance.retrieveDatasetContentsByDatasetId(datasetId);
+        System.out.println("datasetId="+datasetId);
+        String result = dataverseClient.retrieveDatasetContentsByDatasetId(datasetId);
+        System.out.println("result="+result);
+        List<FileItem> listFI = dataverseClient.parseReturnedDatasetContentsFromString(result);
+        System.out.println("listFI="+listFI);
+        System.out.println("listFI.size="+listFI.size());
+        
     }
 
     /**
@@ -439,7 +459,7 @@ public class Jersey2DataverseClientTest {
      * Test of addFilesToDataset method, of class Jersey2DataverseClient.
      * @throws java.lang.Exception
      */
-    
+    @Ignore
     @Test
     public void testAddFilesToDataset_0args() throws Exception {
         System.out.println("\n\ntesting addFilesToDataset  0 arguments");
@@ -566,7 +586,8 @@ public class Jersey2DataverseClientTest {
     public void testDeleteDatafile() {
         System.out.println("\n\n testing deleteDatafile");
         
-        // A fileId may be extracted from the metadata of its parent dataset;
+        // A fileId may be extracted from the metadata of its parent dataset to
+        // to make its existence-confirmation  unnecessary
         String fileId = datafileId;
         System.out.println("datafileId to be deleted="+fileId);
         dataverseClient.deleteDatafile(fileId);
