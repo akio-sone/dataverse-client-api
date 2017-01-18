@@ -841,9 +841,6 @@ public class Jersey2DataverseClient {
             logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
             if (statusCode == 200) {
                 logger.log(Level.INFO, "retrieval of this dataset was successful");
-                // TODO
-                // parse the returned object if successful
-
             } else {
                 // parse the returned code; Normal case 
                 logger.log(Level.SEVERE, "retrieval of this dataset failed: status code={0}",
@@ -865,9 +862,11 @@ public class Jersey2DataverseClient {
      *
      * @param persistentId
      */
-    public void retrieveDatasetContentsByPersistentId(String persistentId) {
+    public String retrieveDatasetContentsByPersistentId(String persistentId) {
 
         Response response = null;
+        String returnedResult = null;
+        
         try {
             if (StringUtils.isBlank(persistentId)) {
                 throw new IllegalArgumentException("persistentId should not be blank");
@@ -884,14 +883,12 @@ public class Jersey2DataverseClient {
             response = webTarget.request(MediaType.APPLICATION_JSON).get();
 
             int statusCode = response.getStatus();
-
+            returnedResult = response.readEntity(String.class);
+            
             logger.log(Level.INFO, "response.status={0}", statusCode);
-            logger.log(Level.INFO, "response.readEntity={0}", response.readEntity(String.class));
+            logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
             if (statusCode == 200) {
                 logger.log(Level.INFO, "retrieval of this dataset was successful");
-                // TODO
-                // parse the returned object if successful
-
             } else {
                 // parse the returned code; Normal case 
                 logger.log(Level.SEVERE, "retrieval of this dataset failed: status code={0}",
@@ -906,6 +903,7 @@ public class Jersey2DataverseClient {
             }
             client.close();
         }
+        return returnedResult;
     }
 
     /**

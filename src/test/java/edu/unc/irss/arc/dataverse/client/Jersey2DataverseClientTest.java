@@ -39,6 +39,7 @@ public class Jersey2DataverseClientTest {
     String dataverseAlias;
     String datasetId;
     String datafileId;
+    String persistentId;
 
     
     public Jersey2DataverseClientTest() {
@@ -67,7 +68,7 @@ public class Jersey2DataverseClientTest {
         String server=System.getProperty("server");
         String apiKey=System.getProperty("apiKey");
         dataverseAlias=System.getProperty("dataverseAlias");
-        String persistentId=System.getProperty("persistentId");
+        persistentId=System.getProperty("persistentId");
         String zipFileLocation=System.getProperty("zipFileLocation");
         
         
@@ -86,9 +87,13 @@ public class Jersey2DataverseClientTest {
         
         System.out.println("setUp:dataverseId=" + System.getProperty("dataverseId"));
         dataverseId = System.getProperty("dataverseId");
-        datasetId=System.getProperty("dataverseId");
+        
         System.out.println("setUp:datasetId=" + System.getProperty("datasetId"));
+        
         datasetId=System.getProperty("datasetId");
+        
+        System.out.println("setUp:persistentId=" + persistentId);
+        
         System.out.println("setUp:datafileId=" + System.getProperty("datafileId"));
         datafileId=System.getProperty("datafileId");
     }
@@ -103,11 +108,16 @@ public class Jersey2DataverseClientTest {
     @Ignore
     @Test
     public void testGetNativeApiUri() {
-        System.out.println("getNativeApiUri");
-        String endPath = "";
-        Jersey2DataverseClient instance = null;
-        String expResult = "";
-        String result = instance.getNativeApiUri(endPath);
+        System.out.println("\n\n testing getNativeApiUri");
+        
+        
+        String endPath = "/dataverses";
+        System.out.println("endPath="+endPath);
+        String result = dataverseClient.getNativeApiUri(endPath);
+        String expResult="/api/v1/dataverses";
+        System.out.println("expected: uri"+expResult);
+        System.out.println("actual: uri"+result);
+        assertThat("URI for native API calls", result, is(equalTo(expResult)));
 
     }
 
@@ -117,12 +127,13 @@ public class Jersey2DataverseClientTest {
     @Ignore
     @Test
     public void testGetSwordApiUri() {
-        System.out.println("getSwordApiUri");
-        String endPath = "";
-        Jersey2DataverseClient instance = null;
-        String expResult = "";
-        String result = instance.getSwordApiUri(endPath);
-
+        System.out.println("\n\n testing getSwordApiUri");
+        String endPath = "/study";
+        String expResult = "/dvn/api/data-deposit/v1.1/swordv2/edit-media"+endPath;
+        System.out.println("expected: uri"+expResult);
+        String result = dataverseClient.getSwordApiUri(endPath);
+        System.out.println("actual: uri"+result);
+        assertThat("URI for sword API calls", result, is(equalTo(expResult)));
     }
 
     /**
@@ -263,7 +274,7 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDataverseContentsByDataverseAlias method, of class Jersey2DataverseClient.
      */
-    
+    @Ignore
     @Test
     public void testRetrieveDataverseContentsByDataverseAlias() {
         System.out.println("\n\ntesting retrieveDataverseContentsByDataverseAlias");
@@ -286,7 +297,7 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDataverseContentsByDataverseId method, of class Jersey2DataverseClient.
      */
-    
+    @Ignore
     @Test
     public void testRetrieveDataverseContentsByDataverseId() {
         System.out.println("\n\ntesting retrieveDataverseContentsByDataverseId");
@@ -403,7 +414,7 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDatasetContentsByDatasetId method, of class Jersey2DataverseClient.
      */
-    
+    @Ignore
     @Test
     public void testRetrieveDatasetContentsByDatasetId() {
         System.out.println("\n\nretrieveDatasetContentsByDatasetId");
@@ -415,6 +426,10 @@ public class Jersey2DataverseClientTest {
         System.out.println("listFI="+listFI);
         System.out.println("listFI.size="+listFI.size());
         
+        assertThat("how many objects in this dataset", listFI, hasSize(equalTo(8)));
+        assertThat("how many objects in this dataset", listFI.size(), equalTo(8));
+        
+        
     }
 
     /**
@@ -423,10 +438,19 @@ public class Jersey2DataverseClientTest {
     @Ignore
     @Test
     public void testRetrieveDatasetContentsByPersistentId() {
-        System.out.println("retrieveDatasetContentsByPersistentId");
-        String persistentId = "";
-        Jersey2DataverseClient instance = null;
-        instance.retrieveDatasetContentsByPersistentId(persistentId);
+        System.out.println("\n\nretrieveDatasetContentsByPersistentId");
+        System.out.println("persistentId="+persistentId);
+        String result = dataverseClient.retrieveDatasetContentsByPersistentId(persistentId);
+        
+        System.out.println("result="+result);
+        List<FileItem> listFI = dataverseClient.parseReturnedDatasetContentsFromString(result);
+        System.out.println("listFI="+listFI);
+        System.out.println("listFI.size="+listFI.size());
+        
+        assertThat("how many objects in this dataset", listFI, hasSize(equalTo(8)));
+        assertThat("how many objects in this dataset", listFI.size(), equalTo(8));
+        
+        
     }
 
     /**
