@@ -8,6 +8,7 @@ import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -38,6 +39,7 @@ public class FileZipperTest {
     /**
      * Test of create method, of class FileZipper.
      */
+    @Ignore
     @Test
     public void testCreate() {
         System.out.println("create");

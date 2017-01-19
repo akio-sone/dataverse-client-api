@@ -9,10 +9,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -49,6 +50,7 @@ public class FileVisitorForZippingTest {
     /**
      * Test of visitFile method, of class FileVisitorForZipping.
      */
+    @Ignore
     @Test
     public void testVisitFile() throws Exception {
         System.out.println("visitFile");
@@ -65,6 +67,7 @@ public class FileVisitorForZippingTest {
     /**
      * Test of preVisitDirectory method, of class FileVisitorForZipping.
      */
+    @Ignore
     @Test
     public void testPreVisitDirectory() throws Exception {
         System.out.println("preVisitDirectory");

@@ -57,11 +57,11 @@
         
         
         
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>2.2.16</version>
-</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.2.16</version>
+        </dependency>
         
         
         
@@ -80,12 +80,12 @@
         </dependency>
         
         
-<dependency>
-   <groupId>org.hibernate</groupId>
-   <artifactId>hibernate-validator</artifactId>
-   <version>5.3.2.Final</version>
-</dependency>
-        
+        <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-validator</artifactId>
+           <version>5.3.2.Final</version>
+        </dependency>
+
         
         
         
@@ -120,6 +120,99 @@
         
         
     </dependencies>
+    
+    <build>  
+        <plugins>  
+            <plugin>  
+                <groupId>org.apache.maven.plugins</groupId>  
+                <artifactId>maven-compiler-plugin</artifactId>  
+                <version>3.6.0</version>  
+                <configuration>  
+                    <source>1.8</source>  
+                    <target>1.8</target>  
+                </configuration>  
+            </plugin>
+        
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+          
+          
+          
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.13</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        
+        
+            <!--        <plugin>  
+                <groupId>org.codehaus.mojo</groupId>  
+                <artifactId>cobertura-maven-plugin</artifactId>  
+                <version>2.7</version>  
+                <dependencies>  
+                    <dependency>  
+                        <groupId>org.ow2.asm</groupId>  
+                        <artifactId>asm</artifactId>  
+                        <version>5.0.3</version>  
+                    </dependency>  
+                </dependencies>  
+            </plugin>-->
+        </plugins>
+    </build> 
+    
+<!--    <reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>cobertura-maven-plugin</artifactId>
+          <version>2.7</version>
+            <dependencies>  
+                <dependency>  
+                    <groupId>org.ow2.asm</groupId>  
+                    <artifactId>asm</artifactId>  
+                    <version>5.0.3</version>  
+                </dependency>  
+            </dependencies>  
+          
+          
+        </plugin>
+      </plugins>
+    </reporting>-->
+    
+    
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
