@@ -22,6 +22,7 @@ public class FileZipperTest {
     
     @BeforeClass
     public static void setUpClass() {
+        System.out.println("\n\nexcuting the unit tests of FileZipperTest\n\n");
     }
     
     @AfterClass

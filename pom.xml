@@ -156,11 +156,11 @@
           
             </plugin>
             <plugin>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <version>2.19.1</version>
-              <configuration>
-                <excludedGroups>edu.unc.irss.arc.dataverse.IntegrationTest</excludedGroups>
-              </configuration>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <excludedGroups>edu.unc.irss.arc.dataverse.IntegrationTest</excludedGroups>
+                </configuration>
             </plugin>
             
             
@@ -168,16 +168,12 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-<!--                <includes>
-                    <include>**/*.java</include>
-                </includes>-->
-                <groups>edu.unc.irss.arc.dataverse.IntegrationTest</groups>
+                    <groups>edu.unc.irss.arc.dataverse.IntegrationTest</groups>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>integration-test</goal>
-                            <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>

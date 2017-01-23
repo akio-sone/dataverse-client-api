@@ -21,6 +21,7 @@ public class MinimumFieldsForDatasetTest {
     
     @BeforeClass
     public static void setUpClass() {
+        System.out.println("\n\nexcuting the unit tests of MinimumFieldsForDatasetTest\n\n");
     }
     
     @AfterClass

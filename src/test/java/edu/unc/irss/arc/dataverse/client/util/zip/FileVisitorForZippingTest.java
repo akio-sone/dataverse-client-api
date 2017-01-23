@@ -31,6 +31,7 @@ public class FileVisitorForZippingTest {
     
     @BeforeClass
     public static void setUpClass() {
+        System.out.println("\n\nexcuting the unit tests of FileVisitorForZippingTest\n\n");
     }
     
     @AfterClass

@@ -26,6 +26,7 @@ public class Jersey2DataverseClientIT {
     
     @BeforeClass
     public static void setUpClass() {
+        System.out.println("\n\nexcuting the unit tests of Jersey2DataverseClientIT\n\n");
     }
     
     @AfterClass

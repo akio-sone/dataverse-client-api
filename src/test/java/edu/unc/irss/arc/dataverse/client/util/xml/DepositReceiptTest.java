@@ -30,6 +30,7 @@ public class DepositReceiptTest {
     
     @BeforeClass
     public static void setUpClass() {
+        System.out.println("\n\nexcuting the unit tests of DepositReceiptTest\n\n");
     }
     
     @AfterClass
