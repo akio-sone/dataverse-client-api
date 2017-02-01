@@ -117,7 +117,11 @@
             <version>1.7.22</version>
         </dependency>
         
-        
+        <dependency>
+            <groupId>com.openpojo</groupId>
+            <artifactId>openpojo</artifactId>
+            <version>0.8.4</version>
+        </dependency>
         
     </dependencies>
     
