@@ -1,8 +1,10 @@
 package edu.unc.irss.arc.dataverse.client;
 
 import com.openpojo.reflection.PojoClass;
+import com.openpojo.reflection.PojoClassFilter;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.PojoValidator;
+import com.openpojo.validation.Validator;
+import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
@@ -23,12 +25,11 @@ public class DataverseClientConfigTest {
     public DataverseClientConfigTest() {
     }
 
-    
     // private List<PojoClass> pojoClasses;
     PojoClass configPojo;
-    private PojoValidator pojoValidator;
-    
-    
+    private String packageName ="edu.unc.irss.arc.dataverse.client";
+    private Validator validator;
+    private PojoClassFilter filterTestClasses = new FilterTestClasses();
     @BeforeClass
     public static void setUpClass() {
         System.out.println("\n\nexcuting the unit tests of DataverseClientConfigTest\n\n");
@@ -43,25 +44,33 @@ public class DataverseClientConfigTest {
     public void setUp() {
         configPojo = PojoClassFactory.getPojoClass(DataverseClientConfig.class);
 
-        pojoValidator = new PojoValidator();
-        pojoValidator.addRule(new SetterMustExistRule());
-        pojoValidator.addRule(new GetterMustExistRule());
-        pojoValidator.addTester(new SetterTester());
-        pojoValidator.addTester(new GetterTester());
+        validator = ValidatorBuilder.create()
+                .with(new GetterMustExistRule())
+                .with(new SetterMustExistRule())
+                .with(new SetterTester())
+                .with(new GetterTester())
+                .build();
 
-
-        
-        
     }
 
     @After
     public void tearDown() {
     }
 
+    
+    
+  private static class FilterTestClasses implements PojoClassFilter {
+    @Override
+    public boolean include(PojoClass pojoClass) {
+      return !pojoClass.getSourcePath().contains("/test-classes/");
+    }
+  }
+    
+    
     @Test
     public void validateSettersAndGetters() {
         System.out.println("\n\n running validateSettersAndGetters()");
-        pojoValidator.runValidation(configPojo);
+        validator.validate(packageName, filterTestClasses);
     }
 
     /**
