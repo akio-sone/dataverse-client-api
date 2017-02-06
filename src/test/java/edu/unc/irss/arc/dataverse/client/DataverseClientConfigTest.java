@@ -1,19 +1,13 @@
 package edu.unc.irss.arc.dataverse.client;
 
-import com.openpojo.reflection.PojoClass;
-import com.openpojo.reflection.PojoClassFilter;
-import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.Validator;
-import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.rule.impl.GetterMustExistRule;
-import com.openpojo.validation.rule.impl.SetterMustExistRule;
-import com.openpojo.validation.test.impl.GetterTester;
-import com.openpojo.validation.test.impl.SetterTester;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -25,15 +19,9 @@ public class DataverseClientConfigTest {
     public DataverseClientConfigTest() {
     }
 
-    // private List<PojoClass> pojoClasses;
-    PojoClass configPojo;
-    private String packageName ="edu.unc.irss.arc.dataverse.client";
-    private Validator validator;
-    private PojoClassFilter filterTestClasses = new FilterTestClasses();
     @BeforeClass
     public static void setUpClass() {
         System.out.println("\n\nexcuting the unit tests of DataverseClientConfigTest\n\n");
-
     }
 
     @AfterClass
@@ -42,49 +30,23 @@ public class DataverseClientConfigTest {
 
     @Before
     public void setUp() {
-        configPojo = PojoClassFactory.getPojoClass(DataverseClientConfig.class);
-
-        validator = ValidatorBuilder.create()
-                .with(new GetterMustExistRule())
-                .with(new SetterMustExistRule())
-                .with(new SetterTester())
-                .with(new GetterTester())
-                .build();
-
     }
 
     @After
     public void tearDown() {
     }
 
-    
-    
-  private static class FilterTestClasses implements PojoClassFilter {
-    @Override
-    public boolean include(PojoClass pojoClass) {
-      return !pojoClass.getSourcePath().contains("/test-classes/");
-    }
-  }
-    
-    
-    @Test
-    public void validateSettersAndGetters() {
-        System.out.println("\n\n running validateSettersAndGetters()");
-        validator.validate(packageName, filterTestClasses);
-    }
-
     /**
      * Test of getServer method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetServer() {
         System.out.println("getServer");
         DataverseClientConfig instance = new DataverseClientConfig();
-        String expResult = "";
+        String expResult = "someserver.somedept.someu.org";
         String result = instance.getServer();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -92,17 +54,24 @@ public class DataverseClientConfigTest {
      */
     @Test
     public void testSetServer() {
-        System.out.println("setServer");
-        String server = "";
+        System.out.println("\n\ntesting setServer");
+        String expResult = "someserver.somedept.someu.org";
         DataverseClientConfig instance = new DataverseClientConfig();
-        instance.setServer(server);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setServer(expResult);
+
+        String result = instance.getServer();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set server : test case 1:", result, is(equalTo(expResult)));
+        
+        
+
     }
 
     /**
      * Test of getTarget method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetTarget() {
         System.out.println("getTarget");
@@ -130,6 +99,7 @@ public class DataverseClientConfigTest {
     /**
      * Test of getPath method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetPath() {
         System.out.println("getPath");
@@ -157,6 +127,7 @@ public class DataverseClientConfigTest {
     /**
      * Test of getApiKey method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetApiKey() {
         System.out.println("getApiKey");
@@ -184,6 +155,7 @@ public class DataverseClientConfigTest {
     /**
      * Test of getPersistentId method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetPersistentId() {
         System.out.println("getPersistentId");
@@ -211,6 +183,7 @@ public class DataverseClientConfigTest {
     /**
      * Test of getApiVersion method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetApiVersion() {
         System.out.println("getApiVersion");
@@ -239,6 +212,7 @@ public class DataverseClientConfigTest {
      * Test of getDataverseAlias method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testGetDataverseAlias() {
         System.out.println("getDataverseAlias");
         DataverseClientConfig instance = new DataverseClientConfig();
@@ -266,6 +240,7 @@ public class DataverseClientConfigTest {
      * Test of getDataverseId method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testGetDataverseId() {
         System.out.println("getDataverseId");
         DataverseClientConfig instance = new DataverseClientConfig();
@@ -292,6 +267,7 @@ public class DataverseClientConfigTest {
     /**
      * Test of getGroupAlias method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testGetGroupAlias() {
         System.out.println("getGroupAlias");
@@ -320,6 +296,7 @@ public class DataverseClientConfigTest {
      * Test of getGroupId method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testGetGroupId() {
         System.out.println("getGroupId");
         DataverseClientConfig instance = new DataverseClientConfig();
@@ -347,6 +324,7 @@ public class DataverseClientConfigTest {
      * Test of getName method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testGetName() {
         System.out.println("getName");
         DataverseClientConfig instance = new DataverseClientConfig();
@@ -374,14 +352,12 @@ public class DataverseClientConfigTest {
      * Test of getZipFileLocation method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testGetZipFileLocation() {
         System.out.println("getZipFileLocation");
         DataverseClientConfig instance = new DataverseClientConfig();
         String expResult = "";
         String result = instance.getZipFileLocation();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -390,38 +366,41 @@ public class DataverseClientConfigTest {
     @Test
     public void testSetZipFileLocation() {
         System.out.println("setZipFileLocation");
-        String zipFileLocation = "";
+        String expResult = "/testDataFiles/images/menu_bar_support_2012-10-08.png";
         DataverseClientConfig instance = new DataverseClientConfig();
-        instance.setZipFileLocation(zipFileLocation);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setZipFileLocation(expResult);
+        String result = instance.getZipFileLocation();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set request URI : test case 1:", result, is(equalTo(expResult)));
     }
 
     /**
      * Test of getRequestURI method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testGetRequestURI() {
         System.out.println("getRequestURI");
         DataverseClientConfig instance = new DataverseClientConfig();
         String expResult = "";
         String result = instance.getRequestURI();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of setRequestURI method, of class DataverseClientConfig.
      */
     @Test
+    @Ignore
     public void testSetRequestURI() {
-        System.out.println("setRequestURI");
-        String requestURI = "";
+        System.out.println("testing setRequestURI");
+        String expResult = "";
         DataverseClientConfig instance = new DataverseClientConfig();
-        instance.setRequestURI(requestURI);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setRequestURI(expResult);
+        String result = instance.getRequestURI();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set request URI : test case 1:", result, is(equalTo(expResult)));
     }
 
     /**
@@ -429,13 +408,28 @@ public class DataverseClientConfigTest {
      */
     @Test
     public void testGetNativeApiVersion() {
-        System.out.println("getNativeApiVersion");
+        System.out.println("\n\ntesting getNativeApiVersion");
         DataverseClientConfig instance = new DataverseClientConfig();
-        String expResult = "";
+        String expResult = "v1";
+        System.out.println("expected=" + expResult);
         String result = instance.getNativeApiVersion();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("actual=" + result);
+        assertThat("get the native api version: test case 1: no setting", result, is(equalTo(expResult)));
+
+        instance.setNativeApiVersion("1");
+        System.out.println("expected=" + expResult);
+        result = instance.getNativeApiVersion();
+        System.out.println("actual=" + result);
+        assertThat("get the native api version: test case 2: incorrect value", result, is(equalTo(expResult)));
+
+        instance.setNativeApiVersion("v2");
+        result = instance.getNativeApiVersion();
+
+        expResult = "v2";
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("get the native api version: test case 3: non default", result, is(equalTo(expResult)));
+
     }
 
     /**
@@ -443,12 +437,21 @@ public class DataverseClientConfigTest {
      */
     @Test
     public void testSetNativeApiVersion() {
-        System.out.println("setNativeApiVersion");
-        String nativeApiVersion = "";
+        System.out.println("\n\n testing setNativeApiVersion");
+        String expResult = "v2";
         DataverseClientConfig instance = new DataverseClientConfig();
-        instance.setNativeApiVersion(nativeApiVersion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setNativeApiVersion(expResult);
+        String result = instance.getNativeApiVersion();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set the native api version: test case: non default", result, is(equalTo(expResult)));
+        expResult = "v1";
+        instance.setNativeApiVersion("");
+        result = instance.getNativeApiVersion();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set the native api version: test case: default", result, is(equalTo(expResult)));
+
     }
 
     /**
@@ -456,13 +459,13 @@ public class DataverseClientConfigTest {
      */
     @Test
     public void testGetSwordApiVersion() {
-        System.out.println("getSwordApiVersion");
+        System.out.println("\n\ntesting getSwordApiVersion");
         DataverseClientConfig instance = new DataverseClientConfig();
-        String expResult = "";
+        String expResult = "v1.1";
         String result = instance.getSwordApiVersion();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("get the sword api version: test case 1: no setting", result, is(equalTo(expResult)));
     }
 
     /**
@@ -470,12 +473,20 @@ public class DataverseClientConfigTest {
      */
     @Test
     public void testSetSwordApiVersion() {
-        System.out.println("setSwordApiVersion");
-        String swordApiVersion = "";
+        System.out.println("\n\n testing setSwordApiVersion");
+        String expResult = "v2";
         DataverseClientConfig instance = new DataverseClientConfig();
-        instance.setSwordApiVersion(swordApiVersion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setSwordApiVersion(expResult);
+        String result = instance.getSwordApiVersion();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set the sword api version: test case 1: non-default", result, is(equalTo(expResult)));
+        expResult="v1.1";
+        instance.setSwordApiVersion("");
+        result = instance.getSwordApiVersion();
+        System.out.println("expected=" + expResult);
+        System.out.println("actual=" + result);
+        assertThat("set the sword api version: test case 2: default", result, is(equalTo(expResult)));
     }
 
     /**
@@ -495,6 +506,7 @@ public class DataverseClientConfigTest {
     /**
      * Test of toString method, of class DataverseClientConfig.
      */
+    @Ignore
     @Test
     public void testToString() {
         System.out.println("toString");
