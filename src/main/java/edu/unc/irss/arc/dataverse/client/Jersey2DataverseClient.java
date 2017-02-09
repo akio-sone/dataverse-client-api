@@ -1365,16 +1365,40 @@ public class Jersey2DataverseClient {
         return message;
     }
     
+    public void downloadDatasetByDatasetId(String datasetId, String destDir){
+        
+    }
     
     
-    
-    
+    public void downloadDatasetByPersistentId(String persistentId, String destDir){
+        
+        // step get a set of datafileIds
+        
+        // loop through the set to download files
+        
+    }
     
     
     // ------------------------------------------------------------------------
     // datafile-wise methods
     // ------------------------------------------------------------------------
 
+    /**
+     * 
+     * @param datafileId
+     * @param destDir 
+     */
+    public void downloadDatafileByDatafileId(String datafileId, String destDir){
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      *
      * @param fileId
@@ -1420,5 +1444,12 @@ public class Jersey2DataverseClient {
             client.close();
         }
     }
+    
+    
+    
+    
+    
+    
+    
 
 }

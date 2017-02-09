@@ -415,16 +415,20 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDatasetContentsByDatasetId method, of class Jersey2DataverseClient.
      */
-    @Ignore
+    
     @Test
     public void testRetrieveDatasetContentsByDatasetId() {
-        System.out.println("\n\nretrieveDatasetContentsByDatasetId");
+        System.out.println("\n\ntesting retrieveDatasetContentsByDatasetId");
 
         System.out.println("datasetId="+datasetId);
         String result = dataverseClient.retrieveDatasetContentsByDatasetId(datasetId);
         System.out.println("result="+result);
         List<FileItem> listFI = dataverseClient.parseReturnedDatasetContentsFromString(result);
         System.out.println("listFI="+listFI);
+        
+        for (FileItem fi: listFI){
+            System.out.println("file-id=" + fi.getId() + "\n");
+        }
         System.out.println("listFI.size="+listFI.size());
         
         assertThat("how many objects in this dataset", listFI, hasSize(equalTo(8)));
@@ -445,9 +449,16 @@ public class Jersey2DataverseClientTest {
         
         System.out.println("result="+result);
         List<FileItem> listFI = dataverseClient.parseReturnedDatasetContentsFromString(result);
-        System.out.println("listFI="+listFI);
-        System.out.println("listFI.size="+listFI.size());
+        System.out.println("\n\nlistFI="+listFI);
         
+        //listFI.forEach((k) -> System.out.println("file-id=" + k.getId() + "\n"));
+        for (FileItem fi: listFI){
+            System.out.println("file-id=" + fi.getId() + "\n");
+        }
+        
+        System.out.println("\n\nlistFI.size="+listFI.size());
+        
+
         assertThat("how many objects in this dataset", listFI, hasSize(equalTo(8)));
         assertThat("how many objects in this dataset", listFI.size(), equalTo(8));
         
