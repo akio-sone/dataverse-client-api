@@ -39,7 +39,9 @@ public class Jersey2DataverseClientTest {
     String dataverseAlias;
     String datasetId;
     String datafileId;
+    String datafileIds;
     String persistentId;
+    String destDir;
 
     
     public Jersey2DataverseClientTest() {
@@ -95,8 +97,15 @@ public class Jersey2DataverseClientTest {
         
         System.out.println("setUp:persistentId=" + persistentId);
         
+        System.out.println("setUp:datafileIds=" + System.getProperty("datafileIds"));
+        datafileIds=System.getProperty("datafileIds");
+        
         System.out.println("setUp:datafileId=" + System.getProperty("datafileId"));
         datafileId=System.getProperty("datafileId");
+        
+        System.out.println("setUp:destDir=" + System.getProperty("destDir"));
+        destDir=System.getProperty("destDir");
+        
     }
     
     @After
@@ -415,7 +424,7 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of retrieveDatasetContentsByDatasetId method, of class Jersey2DataverseClient.
      */
-    
+    @Ignore
     @Test
     public void testRetrieveDatasetContentsByDatasetId() {
         System.out.println("\n\ntesting retrieveDatasetContentsByDatasetId");
@@ -426,9 +435,10 @@ public class Jersey2DataverseClientTest {
         List<FileItem> listFI = dataverseClient.parseReturnedDatasetContentsFromString(result);
         System.out.println("listFI="+listFI);
         
-        for (FileItem fi: listFI){
+        listFI.forEach((fi) -> {
             System.out.println("file-id=" + fi.getId() + "\n");
-        }
+        });
+        listFI.forEach((k) -> System.out.println("file-id=" + k.getId() + "\n"));
         System.out.println("listFI.size="+listFI.size());
         
         assertThat("how many objects in this dataset", listFI, hasSize(equalTo(8)));
@@ -436,6 +446,32 @@ public class Jersey2DataverseClientTest {
         
         
     }
+    
+    /**
+     * Test of getDatafileIdListFromDatasetContentsFromString method, of class Jersey2DataverseClient.
+     */
+    
+    @Test
+    public void testGetDatafileIdListFromDatasetContentsFromString (){
+        System.out.println("\n\ntesting getDatafileIdListFromDatasetContentsFromString");
+
+        System.out.println("datasetId="+datasetId);
+        String result = dataverseClient.retrieveDatasetContentsByDatasetId(datasetId);
+        System.out.println("result="+result);
+        List<String> datafileIdList = dataverseClient.getDatafileIdListFromDatasetContentsFromString(result);
+        System.out.println("listDatafileId="+datafileIdList);
+        
+
+        datafileIdList.forEach((k) -> System.out.println("file-id=" + k + "\n"));
+        System.out.println("listDatafileId.size="+datafileIdList.size());
+        
+        assertThat("how many datafiles in this dataset", datafileIdList, hasSize(equalTo(8)));
+        assertThat("how many datafiles in this dataset", datafileIdList.size(), equalTo(8));
+        
+        
+    
+    }
+    
 
     /**
      * Test of retrieveDatasetContentsByPersistentId method, of class Jersey2DataverseClient.
@@ -631,5 +667,29 @@ public class Jersey2DataverseClientTest {
         // the list of datafiles under a dataset
         
     }
+    
+    @Ignore
+    @Test
+    public void testDownloadDatafileByDatafileId(){
+        System.out.println("\n\n testing downloadDatafileByDatafileId");
+         // datafileId = "";
+        System.out.println("datafileId="+datafileId);
+         //String destDir = "";
+        System.out.println("destDir="+destDir);
+        dataverseClient.downloadDatafileByDatafileId(datafileId, destDir);
+    }
+
+    
+    
+    @Test
+    public void testDownloadDatafilesByDatafileIds(){
+        System.out.println("\n\n testing downloadDatafilesByDatafileIds");
+         // datafileId = "";
+        System.out.println("datafileIds="+datafileIds);
+         //String destDir = "";
+        System.out.println("destDir="+destDir);
+        dataverseClient.downloadDatafilesByDatafileIds(datafileIds, destDir);
+    }
+    
     
 }

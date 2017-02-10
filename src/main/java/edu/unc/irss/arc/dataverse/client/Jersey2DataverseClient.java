@@ -17,8 +17,11 @@ import edu.unc.irss.arc.dataverse.client.util.dto.FileItem;
 import edu.unc.irss.arc.dataverse.client.util.json.Data;
 import edu.unc.irss.arc.dataverse.client.util.zip.FileZipper;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
@@ -907,7 +910,7 @@ public class Jersey2DataverseClient {
     }
 
     /**
-     *
+     * 
      * @param result
      * @return
      */
@@ -916,7 +919,7 @@ public class Jersey2DataverseClient {
                 "=================parseReturnedDatasetContentsFromString=================");
         List<FileItem> ldf = new ArrayList<>();
 
-        logger.log(Level.INFO, "result={0}", result);
+        logger.log(Level.FINE, "result={0}", result);
 
         try {
 
@@ -966,7 +969,7 @@ public class Jersey2DataverseClient {
 
             });
 
-            logger.log(Level.INFO, "ldf={0}", ldf);
+            logger.log(Level.FINE, "ldf={0}", ldf);
 
         } catch (IllegalArgumentException ex) {
             logger.log(Level.INFO, "IllegalArgumentException was thrown: the input file missing?", ex);
@@ -974,6 +977,31 @@ public class Jersey2DataverseClient {
 
         return ldf;
     }
+    
+    /**
+     * A convenience method to directly return a list of datafile Ids 
+     * from a returned response in Json
+     * @param result returned Json string
+     * @return list of datafileIds
+     */
+    public List<String> getDatafileIdListFromDatasetContentsFromString(String result){
+        logger.log(Level.INFO,
+                "=================getDatafileIdListFromDatasetContentsFromString=================");
+        List<String> datafileIdList = new ArrayList<>();
+        logger.log(Level.FINE, "result={0}", result);
+        List<FileItem> ldf = parseReturnedDatasetContentsFromString(result);
+        logger.log(Level.FINE, "ldf={0}", ldf);
+        (parseReturnedDatasetContentsFromString(result)).forEach((fi) -> {
+            datafileIdList.add(fi.getId().toString());
+        });
+        
+        logger.log(Level.INFO, "datafileIdList={0}", datafileIdList);
+        return datafileIdList;
+    }
+    
+    
+    
+    
 
     /**
      *
@@ -1389,11 +1417,178 @@ public class Jersey2DataverseClient {
      * @param destDir 
      */
     public void downloadDatafileByDatafileId(String datafileId, String destDir){
+        // requirement: get file id
+        logger.log(Level.INFO, "downloading a datafile whose id={0}", datafileId);
+        Response response = null;
+        // emulates a curl-based request
+        // curl -u $API_TOKEN: -X GET
+        // https://$HOSTNAME/api/access/datafile/datafileId
+        //String returnedResult = null;
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        String downloadFilePath = null;
         
+        
+        
+        
+        try {
+            logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
+            logger.log(Level.INFO, "dataverseId={0}", datafileId);
+            logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
+            if (StringUtils.isBlank(datafileId)) {
+                throw new IllegalArgumentException("fileId should not be blank");
+            } else if (StringUtils.isBlank(destDir)){
+                throw new IllegalArgumentException("destination directory should not be blank");
+            }
+
+            webTarget = client.target(clientConfig.getServerURI()
+                    + getNativeApiUri("/access/datafile"))
+                    .path(datafileId)
+                    .queryParam("key", clientConfig.getApiKey());
+
+            response = webTarget.request().get();
+
+            int statusCode = response.getStatus();
+            //returnedResult = response.readEntity(String.class);
+
+            logger.log(Level.INFO, "response.status={0}", statusCode);
+            //logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
+
+            if (statusCode == 200) {
+                logger.log(Level.INFO, "downloading  was successful");
+                
+            // process response
+            inputStream = response.readEntity(InputStream.class);
+            downloadFilePath = destDir + "/requested_datafile_"+datafileId+".zip";
+            //File destFile = new File(downloadFilePath);
+            outputStream = new FileOutputStream(downloadFilePath);
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+                inputStream.close();
+                
+                
+                
+            } else {
+                logger.log(Level.SEVERE, "downloading failed: status code={0}",
+                        statusCode);
+                throw new WebApplicationException("downloading request failed", Status.fromStatusCode(statusCode));
+            }
+
+        } catch (FileNotFoundException ex) {
+            logger.log(Level.SEVERE, "zip file was not found", ex);
+            throw new RuntimeException("downloading request failed: zip file was not created");
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "IOException was thrown", ex);
+            throw new RuntimeException("downloading request failed: due to IOException");
+        } finally {
+            if (response != null) {
+                response.close();
+            }
+            
+            if (outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, "IOException was thrown", ex);
+                }
+            }
+            client.close();
+        }
     }
     
     
     
+
+    /**
+     * 
+     * @param datafileIds
+     * @param destDir 
+     */
+    public void downloadDatafilesByDatafileIds(String datafileIds, String destDir){
+        // requirement: get file id
+        logger.log(Level.INFO, "downloading datafiles whose ids={0}", datafileIds);
+        Response response = null;
+        // emulates a curl-based request
+        // curl -u $API_TOKEN: -X GET
+        // https://$HOSTNAME/api/access/datafile/datafileId
+        //String returnedResult = null;
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        String downloadFilePath = null;
+        
+        
+        
+        
+        try {
+            logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
+            logger.log(Level.INFO, "dataverseIds={0}", datafileIds);
+            logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
+            if (StringUtils.isBlank(datafileIds)) {
+                throw new IllegalArgumentException("fileId should not be blank");
+            } else if (StringUtils.isBlank(destDir)){
+                throw new IllegalArgumentException("destination directory should not be blank");
+            }
+
+            webTarget = client.target(clientConfig.getServerURI()
+                    + getNativeApiUri("/access/datafiles"))
+                    .path(datafileIds)
+                    .queryParam("key", clientConfig.getApiKey());
+
+            response = webTarget.request().get();
+
+            int statusCode = response.getStatus();
+            //returnedResult = response.readEntity(String.class);
+
+            logger.log(Level.INFO, "response.status={0}", statusCode);
+            //logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
+
+            if (statusCode == 200) {
+                logger.log(Level.INFO, "downloading  was successful");
+                
+            // process response
+            inputStream = response.readEntity(InputStream.class);
+            downloadFilePath = destDir + "/requested_datafile_"+datafileIds+".zip";
+            //File destFile = new File(downloadFilePath);
+            outputStream = new FileOutputStream(downloadFilePath);
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+                inputStream.close();
+                
+                
+                
+            } else {
+                logger.log(Level.SEVERE, "downloading failed: status code={0}",
+                        statusCode);
+                throw new WebApplicationException("downloading request failed", Status.fromStatusCode(statusCode));
+            }
+
+        } catch (FileNotFoundException ex) {
+            logger.log(Level.SEVERE, "zip file was not found", ex);
+            throw new RuntimeException("downloading request failed: zip file was not created");
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "IOException was thrown", ex);
+            throw new RuntimeException("downloading request failed: due to IOException");
+        } finally {
+            if (response != null) {
+                response.close();
+            }
+            
+            if (outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, "IOException was thrown", ex);
+                }
+            }
+            client.close();
+        }
+    }
     
     
     
@@ -1401,11 +1596,11 @@ public class Jersey2DataverseClient {
     
     /**
      *
-     * @param fileId
+     * @param datafileId
      */
-    public void deleteDatafile(String fileId) {
+    public void deleteDatafile(String datafileId) {
         // requirement: get file id
-        logger.log(Level.INFO, "deleting a file whose id={0}", fileId);
+        logger.log(Level.INFO, "deleting a datafile whose id={0}", datafileId);
         Response response = null;
         // emulates a curl-based request
         // curl -u $API_TOKEN: -X DELETE
@@ -1413,12 +1608,12 @@ public class Jersey2DataverseClient {
 
         try {
 
-            if (StringUtils.isBlank(fileId)) {
+            if (StringUtils.isBlank(datafileId)) {
                 throw new IllegalArgumentException("fileId should not be blank");
             }
 
             webTarget = client.target(clientConfig.getServerURI()
-                    + getSwordApiUri("/file")).path(fileId);
+                    + getSwordApiUri("/file")).path(datafileId);
 
             response = webTarget
                     .request().delete();
