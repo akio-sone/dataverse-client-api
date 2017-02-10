@@ -1442,7 +1442,7 @@ public class Jersey2DataverseClient {
             }
 
             webTarget = client.target(clientConfig.getServerURI()
-                    + getNativeApiUri("/access/datafile"))
+                    + getNativeApiUri("/access/datafiles"))
                     .path(datafileId)
                     .queryParam("key", clientConfig.getApiKey());
 
