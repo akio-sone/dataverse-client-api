@@ -450,7 +450,7 @@ public class Jersey2DataverseClientTest {
     /**
      * Test of getDatafileIdListFromDatasetContentsFromString method, of class Jersey2DataverseClient.
      */
-    
+    @Ignore
     @Test
     public void testGetDatafileIdListFromDatasetContentsFromString (){
         System.out.println("\n\ntesting getDatafileIdListFromDatasetContentsFromString");
@@ -668,7 +668,7 @@ public class Jersey2DataverseClientTest {
         
     }
     
-    @Ignore
+    
     @Test
     public void testDownloadDatafileByDatafileId(){
         System.out.println("\n\n testing downloadDatafileByDatafileId");
@@ -680,7 +680,7 @@ public class Jersey2DataverseClientTest {
     }
 
     
-    
+    @Ignore
     @Test
     public void testDownloadDatafilesByDatafileIds(){
         System.out.println("\n\n testing downloadDatafilesByDatafileIds");

@@ -841,17 +841,21 @@ public class Jersey2DataverseClient {
             returnedResult = response.readEntity(String.class);
 
             logger.log(Level.INFO, "response.status={0}", statusCode);
-            logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
+            logger.log(Level.FINE, "response.readEntity={0}", returnedResult);
             if (statusCode == 200) {
                 logger.log(Level.INFO, "retrieval of this dataset was successful");
             } else {
                 // parse the returned code; Normal case 
                 logger.log(Level.SEVERE, "retrieval of this dataset failed: status code={0}",
                         statusCode);
+                throw new WebApplicationException("getting the contents of the dataset failed", Status.fromStatusCode(statusCode));
+                
+                
+                
             }
-        } catch (IllegalArgumentException ex) {
-            logger.log(Level.SEVERE, "datasetId was blank and retrieval was aborted",
-                    ex);
+//        } catch (IllegalArgumentException ex) {
+//            logger.log(Level.SEVERE, "datasetId was blank and retrieval was aborted",
+//                    ex);
         } finally {
             if (response != null) {
                 response.close();
@@ -1412,11 +1416,14 @@ public class Jersey2DataverseClient {
     // ------------------------------------------------------------------------
 
     /**
+     * Downloads a single datafile from Dataverse by its Id and saves it
+     * as a zip file in a directory of the local file system.
      * 
-     * @param datafileId
-     * @param destDir 
+     * @param datafileId the Id of a datafile to be downloaded
+     * @param destDir the directory in which a datafile to be downloaded is
+     *   saved
      */
-    public void downloadDatafileByDatafileId(String datafileId, String destDir){
+    public void downloadDatafileByDatafileId(String datafileId, String destDir) {
         // requirement: get file id
         logger.log(Level.INFO, "downloading a datafile whose id={0}", datafileId);
         Response response = null;
@@ -1427,17 +1434,14 @@ public class Jersey2DataverseClient {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         String downloadFilePath = null;
-        
-        
-        
-        
+
         try {
             logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
             logger.log(Level.INFO, "dataverseId={0}", datafileId);
             logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
             if (StringUtils.isBlank(datafileId)) {
                 throw new IllegalArgumentException("fileId should not be blank");
-            } else if (StringUtils.isBlank(destDir)){
+            } else if (StringUtils.isBlank(destDir)) {
                 throw new IllegalArgumentException("destination directory should not be blank");
             }
 
@@ -1456,21 +1460,19 @@ public class Jersey2DataverseClient {
 
             if (statusCode == 200) {
                 logger.log(Level.INFO, "downloading  was successful");
-                
-            // process response
-            inputStream = response.readEntity(InputStream.class);
-            downloadFilePath = destDir + "/requested_datafile_"+datafileId+".zip";
-            //File destFile = new File(downloadFilePath);
-            outputStream = new FileOutputStream(downloadFilePath);
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
+
+                // process response
+                inputStream = response.readEntity(InputStream.class);
+                downloadFilePath = destDir + "/requested_datafile_" + datafileId + ".zip";
+                //File destFile = new File(downloadFilePath);
+                outputStream = new FileOutputStream(downloadFilePath);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
                 inputStream.close();
-                
-                
-                
+
             } else {
                 logger.log(Level.SEVERE, "downloading failed: status code={0}",
                         statusCode);
@@ -1487,8 +1489,8 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            
-            if (outputStream != null){
+
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException ex) {
@@ -1498,16 +1500,20 @@ public class Jersey2DataverseClient {
             client.close();
         }
     }
-    
+
     
     
 
     /**
+     * Downloads a set of datafiles from Dataverse by their Ids and 
+     * saves them as a zip file in a directory of the local file system.
      * 
-     * @param datafileIds
-     * @param destDir 
+     * @param datafileIds  the set of datafile Ids separated by commas such as
+     * 1,2,3 where 1, 2, 3 are datafile Ids
+     * @param destDir the directory in which a datafile to be downloaded is
+     * saved
      */
-    public void downloadDatafilesByDatafileIds(String datafileIds, String destDir){
+    public void downloadDatafilesByDatafileIds(String datafileIds, String destDir) {
         // requirement: get file id
         logger.log(Level.INFO, "downloading datafiles whose ids={0}", datafileIds);
         Response response = null;
@@ -1518,17 +1524,14 @@ public class Jersey2DataverseClient {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         String downloadFilePath = null;
-        
-        
-        
-        
+
         try {
             logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
             logger.log(Level.INFO, "dataverseIds={0}", datafileIds);
             logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
             if (StringUtils.isBlank(datafileIds)) {
                 throw new IllegalArgumentException("fileId should not be blank");
-            } else if (StringUtils.isBlank(destDir)){
+            } else if (StringUtils.isBlank(destDir)) {
                 throw new IllegalArgumentException("destination directory should not be blank");
             }
 
@@ -1547,21 +1550,19 @@ public class Jersey2DataverseClient {
 
             if (statusCode == 200) {
                 logger.log(Level.INFO, "downloading  was successful");
-                
-            // process response
-            inputStream = response.readEntity(InputStream.class);
-            downloadFilePath = destDir + "/requested_datafile_"+datafileIds+".zip";
-            //File destFile = new File(downloadFilePath);
-            outputStream = new FileOutputStream(downloadFilePath);
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
+
+                // process response
+                inputStream = response.readEntity(InputStream.class);
+                downloadFilePath = destDir + "/requested_datafile_" + datafileIds + ".zip";
+                //File destFile = new File(downloadFilePath);
+                outputStream = new FileOutputStream(downloadFilePath);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
                 inputStream.close();
-                
-                
-                
+
             } else {
                 logger.log(Level.SEVERE, "downloading failed: status code={0}",
                         statusCode);
@@ -1578,8 +1579,8 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            
-            if (outputStream != null){
+
+            if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException ex) {
