@@ -54,7 +54,6 @@ public class Jersey2DataverseClient {
     private static final Logger logger
             = Logger.getLogger(Jersey2DataverseClient.class.getName());
 
-    
     // the following block is required for using jsonpath
     static {
         Configuration.setDefaults(new Configuration.Defaults() {
@@ -79,9 +78,6 @@ public class Jersey2DataverseClient {
         });
     }
 
-    
-    
-    
     private DataverseClientConfig clientConfig;
 
     private WebTarget webTarget;
@@ -146,56 +142,52 @@ public class Jersey2DataverseClient {
         client.register(feature);
 
     }
-    
-    
+
     private final static String BUNDLE_NAME = "Bundle";
-    private final static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME); 
-    
-    
+    private final static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+
     public static void main(String[] args) throws IOException {
-        
+
         if (args.length != 5) {
             logger.log(Level.SEVERE, "Three arguments: dataverse_URL, Api_key, dataverse_Alias are expected dataset_Id file_location");
             throw new IllegalArgumentException("The number of arguments must be 5.");
         }
-        
-        for (int i=0; i< args.length; i++){
-            System.out.println("arg["+i+"]:="+args[i]);
+
+        for (int i = 0; i < args.length; i++) {
+            System.out.println("arg[" + i + "]:=" + args[i]);
         }
-        
+
         System.out.println("DV_API_KEY=" + System.getProperty("DV_API_KEY"));
-        
-        for (String arg: args){
+
+        for (String arg : args) {
             logger.log(Level.INFO, "arg={0}", arg);
         }
-        
+
         if (StringUtils.isBlank(args[0])) {
             logger.log(Level.SEVERE, "dataverse URL should not be blank");
             throw new IllegalArgumentException("dataverse URL should not be blank");
         }
-        
+
         if (StringUtils.isBlank(args[1])) {
             logger.log(Level.SEVERE, "API key should not be blank");
             throw new IllegalArgumentException("API Key should not be blank");
         }
-        
+
         if (StringUtils.isBlank(args[2])) {
             logger.log(Level.SEVERE, "dataverse alias should not be blank");
             throw new IllegalArgumentException("dataverse alias should not be blank");
         }
-        
+
         if (StringUtils.isBlank(args[3])) {
             logger.log(Level.SEVERE, "dataset Id should not be blank");
             throw new IllegalArgumentException("dataset Id should not be blank");
         }
-        
+
         if (StringUtils.isBlank(args[4])) {
             logger.log(Level.SEVERE, "file location should not be blank");
             throw new IllegalArgumentException("file location should not be blank");
         }
-        
-        
-        
+
         // likely usage cases
         // Person value =
         // GenericBuilder.of(Person::new).with(Person::setName, "Otto").with(Person::setAge, 5).build();
@@ -208,43 +200,38 @@ public class Jersey2DataverseClient {
                 .with(DataverseClientConfig::setPersistentId, args[3])
                 .with(DataverseClientConfig::setZipFileLocation, args[4])
                 .build();
-        
-        
-        System.out.println("server="+args[0]);
-        System.out.println("apikey="+args[1]);
-        
-        System.out.println("DataverseAlias="+args[2]);
-        System.out.println("setPersistentId="+args[3]);
-        System.out.println("setPersistentId="+args[4]);
-        
+
+        System.out.println("server=" + args[0]);
+        System.out.println("apikey=" + args[1]);
+
+        System.out.println("DataverseAlias=" + args[2]);
+        System.out.println("setPersistentId=" + args[3]);
+        System.out.println("setPersistentId=" + args[4]);
+
         // persistentId and zip-file location are stored in the config instance
         Jersey2DataverseClient dataverseClient = new Jersey2DataverseClient(clientConfig);
         //dataverseClient.addFilesToDataset();
-        
-        
-        
+
     }
-    
-    
+
     // ------------------------------------------------------------------------
     // main method
     // ------------------------------------------------------------------------
-    
     public String publishDatafile(String persistentId, File file) throws
             IllegalArgumentException, IOException {
         if (StringUtils.isBlank(persistentId)) {
             throw new IllegalArgumentException("persistentId should not be blank");
-        } else if (persistentId.startsWith("doi:")){
+        } else if (persistentId.startsWith("doi:")) {
             persistentId = persistentId.replace("doi:", "");
         }
 
         if (!file.exists() || file.length() == 0L) {
             throw new IllegalArgumentException("A target file must exit and be non-empty");
         }
-        
+
         return addFilesToDataset(file, persistentId);
     }
-    
+
     public String publishDatafile(String persistentId, String filename) throws IllegalArgumentException, IOException {
         File file = new File(filename);
         return publishDatafile(persistentId, file);
@@ -261,8 +248,6 @@ public class Jersey2DataverseClient {
      * @return
      * @throws WebApplicationException
      */
-    
-    
     public String createNonRootDataverseByAlias(MinimumFieldsForDataverse minset)
             throws WebApplicationException {
 
@@ -290,7 +275,7 @@ public class Jersey2DataverseClient {
 
             logger.log(Level.INFO, "jsonString={0}", jsonString);
 
-            webTarget = client.target(clientConfig.getServerURI() 
+            webTarget = client.target(clientConfig.getServerURI()
                     + "/dataverses/:root")
                     .queryParam("key", clientConfig.getApiKey());
 
@@ -320,7 +305,7 @@ public class Jersey2DataverseClient {
         }
         return returnedResult;
     }
-    
+
     /**
      *
      * @param dataverseAlias
@@ -329,11 +314,11 @@ public class Jersey2DataverseClient {
      * @throws WebApplicationException
      */
     public String retrieveDataverseContentsByDataverseAlias(String dataverseAlias) throws IllegalArgumentException, WebApplicationException {
-        
+
         logger.log(Level.INFO, "===== retrieveDataverseContentsByDataverseAlias is called =====");
         Response response = null;
         String returnedResult = null;
-        
+
         try {
             if (StringUtils.isBlank(dataverseAlias)) {
                 throw new IllegalArgumentException("dataverseAlias should not be blank");
@@ -353,7 +338,7 @@ public class Jersey2DataverseClient {
 
             logger.log(Level.INFO, "response.status={0}", statusCode);
             logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
-            
+
             if (statusCode == 200) {
                 logger.log(Level.INFO, "retrieval of this dataverse was successful");
             } else {
@@ -377,8 +362,8 @@ public class Jersey2DataverseClient {
      * @throws IllegalArgumentException
      * @throws WebApplicationException
      */
-    public String retrieveDataverseContentsByDataverseId(Long dataverseId) 
-        throws IllegalArgumentException, WebApplicationException{
+    public String retrieveDataverseContentsByDataverseId(Long dataverseId)
+            throws IllegalArgumentException, WebApplicationException {
         logger.log(Level.INFO, "===== retrieveDataverseContentsByDataverseId is called =====");
         Response response = null;
         String returnedResult = "";
@@ -535,7 +520,6 @@ public class Jersey2DataverseClient {
         String returnedResult = null;
         try {
 
-
             logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
             logger.log(Level.INFO, "dataverseAlias={0}", dataverseAlias);
             logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
@@ -556,8 +540,7 @@ public class Jersey2DataverseClient {
 
             logger.log(Level.INFO, "response.status={0}", statusCode);
             logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
-            
-            
+
             if (statusCode == 200) {
                 logger.log(Level.INFO, "deletion of a dataverse was successful");
             } else {
@@ -565,7 +548,7 @@ public class Jersey2DataverseClient {
                         statusCode);
                 throw new WebApplicationException(returnedResult, Status.fromStatusCode(statusCode));
             }
-            
+
         } finally {
             if (response != null) {
                 response.close();
@@ -574,7 +557,7 @@ public class Jersey2DataverseClient {
         }
         return returnedResult;
     }
-    
+
     /**
      *
      * @param dataverseId
@@ -588,7 +571,7 @@ public class Jersey2DataverseClient {
 
         Response response = null;
         String returnedResult = null;
-        
+
         try {
             logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
             logger.log(Level.INFO, "dataverseId={0}", dataverseId.toString());
@@ -617,26 +600,20 @@ public class Jersey2DataverseClient {
                 logger.log(Level.SEVERE, "deletion of a dataverse failed: status code={0}",
                         statusCode);
                 throw new WebApplicationException(returnedResult, Status.fromStatusCode(statusCode));
-            }            
+            }
         } finally {
             if (response != null) {
                 response.close();
             }
             client.close();
         }
-        
+
         return returnedResult;
     }
-    
-    
-    
-    
-    
+
     // ------------------------------------------------------------------------
     // dataset-wise methods
     // ------------------------------------------------------------------------
-    
-    
 //    public String createDatasetJsonString (MinimumFieldsForDataset minset){
 //                    
 //            
@@ -652,7 +629,6 @@ public class Jersey2DataverseClient {
 //        
 //            return datasetMetadata;
 //    }
-    
     /**
      *
      * @param dataverseId
@@ -661,10 +637,10 @@ public class Jersey2DataverseClient {
      * @throws IllegalArgumentException
      * @throws WebApplicationException
      */
-    public String createDatasetByDataverseId(String dataverseId, 
-            MinimumFieldsForDataset minset) throws IllegalArgumentException, 
+    public String createDatasetByDataverseId(String dataverseId,
+            MinimumFieldsForDataset minset) throws IllegalArgumentException,
             WebApplicationException {
-        
+
         logger.log(Level.INFO, "createDatasetByDataverseId is called");
 
         Response response = null;
@@ -695,7 +671,7 @@ public class Jersey2DataverseClient {
 
             int statusCode = response.getStatus();
             returnedResult = response.readEntity(String.class);
-            
+
             logger.log(Level.INFO, "response.status={0}", statusCode);
             logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
 
@@ -705,7 +681,7 @@ public class Jersey2DataverseClient {
                 logger.log(Level.SEVERE, "dataset was not created: status code={0}",
                         statusCode);
                 throw new WebApplicationException(returnedResult, Response.Status.fromStatusCode(statusCode));
-                
+
             }
 
         } finally {
@@ -716,7 +692,7 @@ public class Jersey2DataverseClient {
         }
         return returnedResult;
     }
-    
+
     /**
      *
      * @param dataverseAlias
@@ -725,15 +701,15 @@ public class Jersey2DataverseClient {
      * @throws IllegalArgumentException
      * @throws WebApplicationException
      */
-    public String createDatasetByDataverseAlias(String dataverseAlias, 
-            MinimumFieldsForDataset minset) throws IllegalArgumentException, 
+    public String createDatasetByDataverseAlias(String dataverseAlias,
+            MinimumFieldsForDataset minset) throws IllegalArgumentException,
             WebApplicationException {
-        
+
         logger.log(Level.INFO, "createDatasetByDataverseAlias is called");
-        
+
         Response response = null;
         String returnedResult = null;
-        
+
         try {
             if (StringUtils.isBlank(dataverseAlias)) {
                 throw new IllegalArgumentException("dataverseAlias should not be blank");
@@ -744,9 +720,8 @@ public class Jersey2DataverseClient {
 //        MinimumFieldsForDataset minset = new MinimumFieldsForDataset.Builder().withTitle("this is a new dataset created by Jersey client trial 6").withAutherAffiliation("UNC Odum Inst").withAuthorName("sone, akio").withEmailAddress("asone@email.unc.edu").withSubject(MinimumFieldsForDataset.Subject.OTHER).create();
             String template = RESOURCE_BUNDLE.getString("templateForDatasetCreation");
 
-        String jsonString = MessageFormat.format(template, new Object[]{minset.getTitle(), minset.getAuthorAffiliation(), minset.getAuthorName(), minset.getEmailAddress(), minset.getDescription(), minset.getSubjectValue()}) ;
-        
-        
+            String jsonString = MessageFormat.format(template, new Object[]{minset.getTitle(), minset.getAuthorAffiliation(), minset.getAuthorName(), minset.getEmailAddress(), minset.getDescription(), minset.getSubjectValue()});
+
             logger.log(Level.INFO, "jsonString={0}", jsonString);
 
             webTarget = client.target(clientConfig.getServerURI()
@@ -760,8 +735,7 @@ public class Jersey2DataverseClient {
 
             int statusCode = response.getStatus();
             returnedResult = response.readEntity(String.class);
-            
-            
+
             logger.log(Level.INFO, "response.status={0}", statusCode);
             logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
 
@@ -786,13 +760,13 @@ public class Jersey2DataverseClient {
      * @param result
      * @return
      */
-    public Long parseDatasetCreateRequestFromString (String result){
+    public Long parseDatasetCreateRequestFromString(String result) {
         logger.log(Level.INFO, "parseDatasetCreateRequestFromString called");
         logger.log(Level.INFO, "result={0}", result);
-        Long datasetId=null;
+        Long datasetId = null;
         try {
-            
-            if (StringUtils.isBlank(result)){
+
+            if (StringUtils.isBlank(result)) {
                 throw new IllegalArgumentException("result should not be blank");
             }
 
@@ -802,18 +776,17 @@ public class Jersey2DataverseClient {
 
             DocumentContext dtx = JsonPath.using(configuration).parse(result);
 
-            datasetId  = dtx.read("$.data.id", Long.class);
-            
-            logger.log(Level.INFO, "returned datasetId={0}", datasetId);
-            
+            datasetId = dtx.read("$.data.id", Long.class);
 
-        } catch (IllegalArgumentException ex){
+            logger.log(Level.INFO, "returned datasetId={0}", datasetId);
+
+        } catch (IllegalArgumentException ex) {
             logger.log(Level.INFO, "IllegalArgumentException was thrown: result string is blank", ex);
         }
-        
+
         return datasetId;
     }
-    
+
     /**
      *
      * @param datasetId
@@ -822,7 +795,7 @@ public class Jersey2DataverseClient {
     public String retrieveDatasetContentsByDatasetId(String datasetId) {
         Response response = null;
         String returnedResult = null;
-        
+
         try {
             if (StringUtils.isBlank(datasetId)) {
                 throw new IllegalArgumentException("datasetId should not be blank");
@@ -849,9 +822,7 @@ public class Jersey2DataverseClient {
                 logger.log(Level.SEVERE, "retrieval of this dataset failed: status code={0}",
                         statusCode);
                 throw new WebApplicationException("getting the contents of the dataset failed", Status.fromStatusCode(statusCode));
-                
-                
-                
+
             }
 //        } catch (IllegalArgumentException ex) {
 //            logger.log(Level.SEVERE, "datasetId was blank and retrieval was aborted",
@@ -868,12 +839,13 @@ public class Jersey2DataverseClient {
     /**
      *
      * @param persistentId
+     * @return
      */
     public String retrieveDatasetContentsByPersistentId(String persistentId) {
 
         Response response = null;
         String returnedResult = null;
-        
+
         try {
             if (StringUtils.isBlank(persistentId)) {
                 throw new IllegalArgumentException("persistentId should not be blank");
@@ -891,7 +863,7 @@ public class Jersey2DataverseClient {
 
             int statusCode = response.getStatus();
             returnedResult = response.readEntity(String.class);
-            
+
             logger.log(Level.INFO, "response.status={0}", statusCode);
             logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
             if (statusCode == 200) {
@@ -914,7 +886,7 @@ public class Jersey2DataverseClient {
     }
 
     /**
-     * 
+     *
      * @param result
      * @return
      */
@@ -937,8 +909,9 @@ public class Jersey2DataverseClient {
 
             DocumentContext dtx = JsonPath.using(configuration).parse(result);
 
-            /* after 
-            http://stackoverflow.com/questions/30026642/map-a-jsonpath-output-to-a-list-of-pojos
+            /*
+             * after
+             * http://stackoverflow.com/questions/30026642/map-a-jsonpath-output-to-a-list-of-pojos
              */
             TypeRef<List<edu.unc.irss.arc.dataverse.client.util.json.File>> type = new TypeRef<List<edu.unc.irss.arc.dataverse.client.util.json.File>>() {
             };
@@ -981,14 +954,35 @@ public class Jersey2DataverseClient {
 
         return ldf;
     }
-    
+
+    public String getDatasetIdFromDatasetContentsFromString(String result) {
+        logger.log(Level.FINE, "result={0}", result);
+
+        if (StringUtils.isBlank(result)) {
+            throw new IllegalArgumentException("result should not be blank");
+        }
+
+        Configuration configuration = Configuration.defaultConfiguration();
+        MappingProvider mappingProvider = new JacksonMappingProvider();
+        configuration.mappingProvider(mappingProvider);
+
+        DocumentContext dtx = JsonPath.using(configuration).parse(result);
+        List<String> idList = dtx.read("$.data..identifier", List.class);
+        logger.log(Level.INFO, "dataset identifier={0}", idList.get(0));
+        //String datasetId = dtx.read("$.data[0].identifier");
+        //logger.log(Level.INFO, "dataset identifier={0}", datasetId);
+
+        return idList.get(0);
+    }
+
     /**
-     * A convenience method to directly return a list of datafile Ids 
-     * from a returned response in Json
+     * A convenience method to directly return a list of datafile Ids from a
+     * returned response in Json
+     *
      * @param result returned Json string
      * @return list of datafileIds
      */
-    public List<String> getDatafileIdListFromDatasetContentsFromString(String result){
+    public List<String> getDatafileIdListFromDatasetContentsFromString(String result) {
         logger.log(Level.INFO,
                 "=================getDatafileIdListFromDatasetContentsFromString=================");
         List<String> datafileIdList = new ArrayList<>();
@@ -998,14 +992,10 @@ public class Jersey2DataverseClient {
         (parseReturnedDatasetContentsFromString(result)).forEach((fi) -> {
             datafileIdList.add(fi.getId().toString());
         });
-        
+
         logger.log(Level.INFO, "datafileIdList={0}", datafileIdList);
         return datafileIdList;
     }
-    
-    
-    
-    
 
     /**
      *
@@ -1027,8 +1017,9 @@ public class Jersey2DataverseClient {
 
             DocumentContext dtx = JsonPath.using(configuration).parse(inputStream);
 
-            /* after 
-            http://stackoverflow.com/questions/30026642/map-a-jsonpath-output-to-a-list-of-pojos
+            /*
+             * after
+             * http://stackoverflow.com/questions/30026642/map-a-jsonpath-output-to-a-list-of-pojos
              */
             TypeRef<List<edu.unc.irss.arc.dataverse.client.util.json.File>> type = new TypeRef<List<edu.unc.irss.arc.dataverse.client.util.json.File>>() {
             };
@@ -1074,58 +1065,51 @@ public class Jersey2DataverseClient {
         return ldf;
     }
 
-    
     // stub code for the for the future Native API
-    private String uploadFilesToDataset() throws IOException{
+    private String uploadFilesToDataset() throws IOException {
 
-        
-        if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
-                StringUtils.isNotBlank(clientConfig.getPersistentId())) {
+        if (StringUtils.isNotBlank(clientConfig.getZipFileLocation())
+                && StringUtils.isNotBlank(clientConfig.getPersistentId())) {
             File zipFile = new File(clientConfig.getZipFileLocation());
-            
-            
+
             // TODO replace null with a new method
             return null;
-            
+
         } else {
             logger.log(Level.SEVERE, "ZipFileLocation and zip-file location must be not blank");
             throw new IllegalArgumentException("Zip-file location and PersistentId must be not blank");
-            
+
         }
-        
+
     }
-    
-    
+
     /**
-     * Uploads the pre-set zip file to the pre-set target Dataverse 
-     * dataset.  The specified payload file may not be a zip file.
-     * 
-     * @return  the returned response from the Dataverse as as {@code String}
+     * Uploads the pre-set zip file to the pre-set target Dataverse dataset. The
+     * specified payload file may not be a zip file.
+     *
+     * @return the returned response from the Dataverse as as {@code String}
      * @throws java.io.IOException
      */
     public String addFilesToDataset() throws IOException {
 
-        if (StringUtils.isNotBlank(clientConfig.getZipFileLocation()) &&
-                StringUtils.isNotBlank(clientConfig.getPersistentId())) {
+        if (StringUtils.isNotBlank(clientConfig.getZipFileLocation())
+                && StringUtils.isNotBlank(clientConfig.getPersistentId())) {
             File zipFile = new File(clientConfig.getZipFileLocation());
-            
-            
-            
+
             return addFilesToDataset(zipFile, clientConfig.getPersistentId());
-            
+
         } else {
             logger.log(Level.SEVERE, "ZipFileLocation and zip-file location must be not blank");
             throw new IllegalArgumentException("Zip-file location and PersistentId must be not blank");
-            
+
         }
     }
-    
-    
+
     /**
      * Uploads the pre-specified file to the target Dataverse dataset.
-     * 
-     * @param  persistentId  The persistent id of the target dataset
-     * @return  the returned response from the Dataverse as as {@code String}
+     *
+     * @param persistentId The persistent id of the target dataset
+     * @return the returned response from the Dataverse as as {@code String}
      * @throws java.io.IOException
      */
     public String addFilesToDataset(String persistentId) throws IOException {
@@ -1144,10 +1128,10 @@ public class Jersey2DataverseClient {
 
     /**
      * Uploads the pre-specified file to the target Dataverse dataset.
-     * 
+     *
      * @param zipFile the file or the directory to be uploaded
-     * @param persistentId  the persistent id of the target dataset
-     * @return  the returned response from the Dataverse as a {@code String}
+     * @param persistentId the persistent id of the target dataset
+     * @return the returned response from the Dataverse as a {@code String}
      * @throws java.io.IOException
      */
     public String addFilesToDataset(java.io.File zipFile, String persistentId) throws IOException {
@@ -1155,11 +1139,11 @@ public class Jersey2DataverseClient {
 
         Response response = null;
         String returnedResult = null;
-        
+
         boolean isOriginalZip = true;
 
         try {
-            
+
             // check arguments first
             if (!zipFile.exists()) {
                 logger.log(Level.INFO, "zip file [{0}] does not exist",
@@ -1169,14 +1153,13 @@ public class Jersey2DataverseClient {
                 logger.log(Level.INFO, "persistentId is blank");
                 throw new IllegalArgumentException("persistentId is blank");
             }
-            
-            
+
             // checks wheter the file is a zip file
-            if (!FileZipper.isZipFile(zipFile)){
+            if (!FileZipper.isZipFile(zipFile)) {
                 // the file is not a zip file; try to zip it as a temp file
                 try {
                     FileZipper fz = new FileZipper();
-                    
+
                     Path sourcePath = zipFile.toPath();
                     Path zipPath = Files.createTempFile("uploadToDataverse_", ".zip");
                     fz.create(sourcePath, zipPath);
@@ -1185,15 +1168,14 @@ public class Jersey2DataverseClient {
                     logger.log(Level.SEVERE, "IOException was thrown", ex);
                     throw ex;
                 }
-                
-                isOriginalZip=false;
-                
+
+                isOriginalZip = false;
+
             } else {
-                logger.log(Level.INFO, "{0} is a zip file", 
+                logger.log(Level.INFO, "{0} is a zip file",
                         clientConfig.getZipFileLocation());
             }
-            
-            
+
             logger.log(Level.INFO, "serverURI={0}", clientConfig.getServerURI());
             logger.log(Level.INFO, "zip file path={0}", zipFile.getAbsolutePath());
             webTarget = client.target(clientConfig.getServerURI()
@@ -1229,37 +1211,32 @@ public class Jersey2DataverseClient {
             }
             client.close();
         }
-        
-        if (!isOriginalZip){
+
+        if (!isOriginalZip) {
             logger.log(Level.INFO, "A temporarily crated zip file ({0}) will be delted on exit", zipFile.getAbsolutePath());
             zipFile.deleteOnExit();
         }
         return returnedResult;
     }
-    
-    
-    
+
     /**
-     * Uploads the file or the set of files to 
-     * the target Dataverse dataset.  
-     * The specified location may not be a zip file.
-     * 
-     * @param zipFileLocation  the absolute path of the file or directory
-     * @param persistentId  the persistent id of the target dataset
-     * @return  the returned response from the Dataverse as a {@code String}
+     * Uploads the file or the set of files to the target Dataverse dataset. The
+     * specified location may not be a zip file.
+     *
+     * @param zipFileLocation the absolute path of the file or directory
+     * @param persistentId the persistent id of the target dataset
+     * @return the returned response from the Dataverse as a {@code String}
      * @throws java.io.IOException
      */
     public String addFilesToDataset(String zipFileLocation, String persistentId) throws IOException {
         logger.log(Level.INFO, "pathToFile={0}", zipFileLocation);
         logger.log(Level.INFO, "persistentId={0}", persistentId);
-        
+
         File zipFile = new File(zipFileLocation);
-        
+
         return addFilesToDataset(zipFile, persistentId);
-        
+
     }
-
-
 
     /**
      *
@@ -1277,7 +1254,7 @@ public class Jersey2DataverseClient {
         // DELETE http://$SERVER/api/datasets/$id?key=$apiKey
         Response response = null;
         String returnedResult = null;
-        
+
         try {
 
             if (datasetId < 1 || StringUtils.isBlank(datasetId.toString())) {
@@ -1330,7 +1307,7 @@ public class Jersey2DataverseClient {
         // DELETE http://$SERVER/api/datasets/$id?key=$apiKey
         Response response = null;
         String returnedResult = null;
-        
+
         try {
 
             if (StringUtils.isBlank(persistentId)) {
@@ -1353,7 +1330,7 @@ public class Jersey2DataverseClient {
             } else {
                 logger.log(Level.SEVERE, "deleting a dataset failed: status code={0}",
                         statusCode);
-                throw new WebApplicationException(returnedResult, 
+                throw new WebApplicationException(returnedResult,
                         Response.Status.fromStatusCode(statusCode));
             }
         } finally {
@@ -1365,17 +1342,17 @@ public class Jersey2DataverseClient {
 
         return returnedResult;
     }
-    
+
     /**
      *
      * @param result
      * @return
      */
-    public String parseDatasetDeleteRequestFromString(String result){
-        String message=null;
+    public String parseDatasetDeleteRequestFromString(String result) {
+        String message = null;
         try {
-            
-            if (StringUtils.isBlank(result)){
+
+            if (StringUtils.isBlank(result)) {
                 throw new IllegalArgumentException("result should not be blank");
             }
 
@@ -1385,43 +1362,36 @@ public class Jersey2DataverseClient {
 
             DocumentContext dtx = JsonPath.using(configuration).parse(result);
 
-            
+            message = dtx.read("$.data.message", String.class);
 
-            message  = dtx.read("$.data.message", String.class);
-            
             logger.log(Level.INFO, "returned message={0}", message);
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             logger.log(Level.INFO, "IllegalArgumentException was thrown: result string is blank", ex);
         }
-        
+
         return message;
     }
-    
-    public void downloadDatasetByDatasetId(String datasetId, String destDir){
-        
+
+    public void downloadDatasetByDatasetId(String datasetId, String destDir) {
+
     }
-    
-    
-    public void downloadDatasetByPersistentId(String persistentId, String destDir){
-        
+
+    public void downloadDatasetByPersistentId(String persistentId, String destDir) {
+
         // step get a set of datafileIds
-        
         // loop through the set to download files
-        
     }
-    
-    
+
     // ------------------------------------------------------------------------
     // datafile-wise methods
     // ------------------------------------------------------------------------
-
     /**
-     * Downloads a single datafile from Dataverse by its Id and saves it
-     * as a zip file in a directory of the local file system.
-     * 
+     * Downloads a single datafile from Dataverse by its Id and saves it as a
+     * zip file in a directory of the local file system.
+     *
      * @param datafileId the Id of a datafile to be downloaded
      * @param destDir the directory in which a datafile to be downloaded is
-     *   saved
+     * saved
      */
     public void downloadDatafileByDatafileId(String datafileId, String destDir) {
         // requirement: get file id
@@ -1437,7 +1407,7 @@ public class Jersey2DataverseClient {
 
         try {
             logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
-            logger.log(Level.INFO, "dataverseId={0}", datafileId);
+            logger.log(Level.INFO, "datafileId={0}", datafileId);
             logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
             if (StringUtils.isBlank(datafileId)) {
                 throw new IllegalArgumentException("fileId should not be blank");
@@ -1501,14 +1471,11 @@ public class Jersey2DataverseClient {
         }
     }
 
-    
-    
-
     /**
-     * Downloads a set of datafiles from Dataverse by their Ids and 
-     * saves them as a zip file in a directory of the local file system.
-     * 
-     * @param datafileIds  the set of datafile Ids separated by commas such as
+     * Downloads a set of datafiles from Dataverse by their Ids and saves them
+     * as a zip file in a directory of the local file system.
+     *
+     * @param datafileIds the set of datafile Ids separated by commas such as
      * 1,2,3 where 1, 2, 3 are datafile Ids
      * @param destDir the directory in which a datafile to be downloaded is
      * saved
@@ -1527,7 +1494,7 @@ public class Jersey2DataverseClient {
 
         try {
             logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
-            logger.log(Level.INFO, "dataverseIds={0}", datafileIds);
+            logger.log(Level.INFO, "datafileIds={0}", datafileIds);
             logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
             if (StringUtils.isBlank(datafileIds)) {
                 throw new IllegalArgumentException("fileId should not be blank");
@@ -1553,7 +1520,9 @@ public class Jersey2DataverseClient {
 
                 // process response
                 inputStream = response.readEntity(InputStream.class);
+
                 downloadFilePath = destDir + "/requested_datafile_" + datafileIds + ".zip";
+
                 //File destFile = new File(downloadFilePath);
                 outputStream = new FileOutputStream(downloadFilePath);
                 byte[] buffer = new byte[1024];
@@ -1590,11 +1559,111 @@ public class Jersey2DataverseClient {
             client.close();
         }
     }
-    
-    
-    
-    
-    
+
+    /**
+     *
+     * @param datafileIds the set of datafile Ids separated by commas such as
+     * 1,2,3 where 1, 2, 3 are datafile Ids
+     * @param destDir the directory in which a zip file to be downloaded is
+     * saved
+     * @param zipfileName a file name without extension
+     */
+    public void downloadDatafilesByDatafileIds(String datafileIds, String destDir, String zipfileName) {
+        // requirement: get file id
+        // requirement: get file id
+        logger.log(Level.INFO, "downloading datafiles whose ids={0}", datafileIds);
+
+        Response response = null;
+        // emulates a curl-based request
+        // curl -u $API_TOKEN: -X GET
+        // https://$HOSTNAME/api/access/datafile/datafileId
+        //String returnedResult = null;
+        //InputStream inputStream = null;
+        //OutputStream outputStream = null;
+        String downloadFilePath = destDir + "/" + zipfileName + ".zip";
+
+        try {
+
+            logger.log(Level.INFO, "uri={0}", clientConfig.getServerURI());
+            logger.log(Level.INFO, "datafileIds={0}", datafileIds);
+            logger.log(Level.INFO, "api_key={0}", clientConfig.getApiKey());
+
+            if (StringUtils.isBlank(datafileIds)) {
+                throw new IllegalArgumentException("fileId should not be blank");
+            } else if (StringUtils.isBlank(destDir)) {
+                throw new IllegalArgumentException("destination directory should not be blank");
+            } else if (StringUtils.isBlank(zipfileName)) {
+                throw new IllegalArgumentException("zip filename should not be blank");
+            }
+
+            webTarget = client.target(clientConfig.getServerURI()
+                    + getNativeApiUri("/access/datafiles"))
+                    .path(datafileIds)
+                    .queryParam("key", clientConfig.getApiKey());
+
+            response = webTarget.request().get();
+
+            int statusCode = response.getStatus();
+            //returnedResult = response.readEntity(String.class);
+
+            logger.log(Level.INFO, "response.status={0}", statusCode);
+            //logger.log(Level.INFO, "response.readEntity={0}", returnedResult);
+
+            if (statusCode == 200) {
+                logger.log(Level.INFO, "downloading  was successful");
+
+                // process response
+                try (InputStream inputStream = response.readEntity(InputStream.class);
+                        OutputStream outputStream = new FileOutputStream(downloadFilePath)) {
+
+                    // outputStream = new FileOutputStream(downloadFilePath);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+
+                } catch (FileNotFoundException ex) {
+                    logger.log(Level.SEVERE, "zip file was not found", ex);
+                    throw new RuntimeException("downloading request failed: zip file was not created");
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, "IOException was thrown", ex);
+                    throw new RuntimeException("downloading request failed: due to IOException");
+                }
+
+            } else {
+                // downloading-failure is suspected
+                logger.log(Level.SEVERE, "downloading failed: status code={0}",
+                        statusCode);
+                throw new WebApplicationException("downloading request failed", Status.fromStatusCode(statusCode));
+            }
+
+        } finally {
+            if (response != null) {
+                response.close();
+            }
+            client.close();
+        }
+    }
+
+    /**
+     *
+     * @param datasetId the Id of a dataset whose files are to be downloaded
+     * @param destDir
+     */
+    public void downloadDatafilesByDatasetId(String datasetId, String destDir) {
+
+        // get the metadata of datasetId
+        String result = retrieveDatasetContentsByDatasetId(datasetId);
+        // get a list of datafileIds 
+        List<String> datafileIdList = getDatafileIdListFromDatasetContentsFromString(result);
+        // 
+        String datafileIdSet = String.join(",", datafileIdList);
+
+        downloadDatafilesByDatafileIds(datafileIdSet, destDir, getDatasetIdFromDatasetContentsFromString(result));
+
+    }
+
     /**
      *
      * @param datafileId
@@ -1640,12 +1709,5 @@ public class Jersey2DataverseClient {
             client.close();
         }
     }
-    
-    
-    
-    
-    
-    
-    
 
 }

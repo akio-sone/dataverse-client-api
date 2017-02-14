@@ -447,6 +447,32 @@ public class Jersey2DataverseClientTest {
         
     }
     
+    
+    
+    
+    
+    
+    @Test
+    public void testGetDatasetIdFromDatasetContentsFromString(){
+        System.out.println("\n\ntesting getDatasetIdFromDatasetContentsFromString");
+        Long dvId = Long.parseLong(dataverseId);
+        System.out.println("dataverseId="+dataverseId);
+        String expected = "PQ1HF3";
+        String result = dataverseClient.retrieveDataverseContentsByDataverseId(dvId);
+        System.out.println("result="+result);
+        String actual = dataverseClient.getDatasetIdFromDatasetContentsFromString(result);
+        System.out.println("actual Id="+actual);
+        assertThat("dataset Id", actual, equalTo(expected));
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Test of getDatafileIdListFromDatasetContentsFromString method, of class Jersey2DataverseClient.
      */
@@ -668,7 +694,7 @@ public class Jersey2DataverseClientTest {
         
     }
     
-    
+    @Ignore
     @Test
     public void testDownloadDatafileByDatafileId(){
         System.out.println("\n\n testing downloadDatafileByDatafileId");
