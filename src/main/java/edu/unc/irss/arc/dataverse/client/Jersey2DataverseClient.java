@@ -301,7 +301,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -350,7 +350,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -401,7 +401,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -553,7 +553,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -605,7 +605,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
 
         return returnedResult;
@@ -688,7 +688,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -750,7 +750,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -831,7 +831,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -880,7 +880,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -968,7 +968,7 @@ public class Jersey2DataverseClient {
 
         DocumentContext dtx = JsonPath.using(configuration).parse(result);
         List<String> idList = dtx.read("$.data..identifier", List.class);
-        logger.log(Level.INFO, "dataset identifier={0}", idList.get(0));
+        logger.log(Level.INFO, "dataset identifier[0]={0}", idList.get(0));
         //String datasetId = dtx.read("$.data[0].identifier");
         //logger.log(Level.INFO, "dataset identifier={0}", datasetId);
 
@@ -986,14 +986,18 @@ public class Jersey2DataverseClient {
         logger.log(Level.INFO,
                 "=================getDatafileIdListFromDatasetContentsFromString=================");
         List<String> datafileIdList = new ArrayList<>();
+        List<Long> datafileIdLList = new ArrayList<>();
         logger.log(Level.FINE, "result={0}", result);
         List<FileItem> ldf = parseReturnedDatasetContentsFromString(result);
         logger.log(Level.FINE, "ldf={0}", ldf);
         (parseReturnedDatasetContentsFromString(result)).forEach((fi) -> {
             datafileIdList.add(fi.getId().toString());
+            //datafileIdLList.add(fi.getId());
         });
-
+        //datafileIdList.sort(Comparator.naturalOrder());
+        //datafileIdLList.sort(String::compareTo);
         logger.log(Level.INFO, "datafileIdList={0}", datafileIdList);
+        //logger.log(Level.INFO, "datafileIdLList={0}", datafileIdLList);
         return datafileIdList;
     }
 
@@ -1209,7 +1213,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
 
         if (!isOriginalZip) {
@@ -1285,7 +1289,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
         return returnedResult;
     }
@@ -1337,7 +1341,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
 
         return returnedResult;
@@ -1467,7 +1471,7 @@ public class Jersey2DataverseClient {
                     logger.log(Level.SEVERE, "IOException was thrown", ex);
                 }
             }
-            client.close();
+//            client.close();
         }
     }
 
@@ -1556,7 +1560,7 @@ public class Jersey2DataverseClient {
                     logger.log(Level.SEVERE, "IOException was thrown", ex);
                 }
             }
-            client.close();
+//            client.close();
         }
     }
 
@@ -1581,6 +1585,7 @@ public class Jersey2DataverseClient {
         //InputStream inputStream = null;
         //OutputStream outputStream = null;
         String downloadFilePath = destDir + "/" + zipfileName + ".zip";
+        logger.log(Level.INFO, "downloadFilePath={0}", downloadFilePath);
 
         try {
 
@@ -1642,31 +1647,55 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+            //client.close();
         }
     }
 
     /**
-     *
+     * Downloads a set of datafiles within a dataset by its Id in one pass.
+     * 
      * @param datasetId the Id of a dataset whose files are to be downloaded
-     * @param destDir
+     * @param destDir the directory in which a zip file to be downloaded is saved
+     * @param zipfileName the name a file name without extension for a downloaded zip file; if "" (blank) is specified, the identifier of a dataset is used.
      */
-    public void downloadDatafilesByDatasetId(String datasetId, String destDir) {
-
+    public void downloadDatafilesByDatasetId(String datasetId, String destDir, String zipfileName) {
+        // to be refactored soon
+        logger.log(Level.INFO, "===== within downloadDatafilesByDatasetId ===== ");
+        logger.log(Level.INFO, "datasetId={0}", datasetId);
+        logger.log(Level.INFO, "destDir={0}", destDir);
+        logger.log(Level.INFO, "zipfileName={0}", zipfileName);
+        
         // get the metadata of datasetId
         String result = retrieveDatasetContentsByDatasetId(datasetId);
+        logger.log(Level.INFO, "returned json object={0}", result);
         // get a list of datafileIds 
-        List<String> datafileIdList = getDatafileIdListFromDatasetContentsFromString(result);
-        // 
-        String datafileIdSet = String.join(",", datafileIdList);
+        //List<String> datafileIdList = getDatafileIdListFromDatasetContentsFromString(result);
+        //logger.log(Level.INFO, "datafileIdList={0}", datafileIdList);
+        // concatenate it
+        //String datafileIdSet = String.join(",", datafileIdList);
+        //logger.log(Level.INFO, "datafileIdSet={0}", datafileIdSet);
+        String finalFileName = zipfileName.equals("") ? getDatasetIdFromDatasetContentsFromString(result) : zipfileName;
+        
+        
+        
+        logger.log(Level.INFO, "finalFileName={0}", finalFileName);
+        downloadDatafilesByDatafileIds(String.join(",",getDatafileIdListFromDatasetContentsFromString(result)), destDir, getDatasetIdFromDatasetContentsFromString(result));
+        
+        logger.log(Level.INFO, "===== leaving downloadDatafilesByDatasetId =====");
+        
+        
+        
+        
 
-        downloadDatafilesByDatafileIds(datafileIdSet, destDir, getDatasetIdFromDatasetContentsFromString(result));
-
+        
+        
+        
     }
 
     /**
-     *
-     * @param datafileId
+     * Deletes a datafile by its Id
+     * 
+     * @param datafileId the Id of a datafile to be deleted
      */
     public void deleteDatafile(String datafileId) {
         // requirement: get file id
@@ -1706,7 +1735,7 @@ public class Jersey2DataverseClient {
             if (response != null) {
                 response.close();
             }
-            client.close();
+//            client.close();
         }
     }
 

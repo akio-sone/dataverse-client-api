@@ -42,6 +42,7 @@ public class Jersey2DataverseClientTest {
     String datafileIds;
     String persistentId;
     String destDir;
+    String datasetIdentifier;
 
     
     public Jersey2DataverseClientTest() {
@@ -105,6 +106,11 @@ public class Jersey2DataverseClientTest {
         
         System.out.println("setUp:destDir=" + System.getProperty("destDir"));
         destDir=System.getProperty("destDir");
+        
+        System.out.println("setUp:datasetIdentifier=" + System.getProperty("datasetIdentifier"));
+        
+        datasetIdentifier=System.getProperty("datasetIdentifier");
+        
         
     }
     
@@ -451,17 +457,21 @@ public class Jersey2DataverseClientTest {
     
     
     
-    
+    /**
+     * Test getDatasetIdFromDatasetContentsFromString of class Jersey2DataverseClient.
+     */
+    @Ignore
     @Test
     public void testGetDatasetIdFromDatasetContentsFromString(){
         System.out.println("\n\ntesting getDatasetIdFromDatasetContentsFromString");
-        Long dvId = Long.parseLong(dataverseId);
-        System.out.println("dataverseId="+dataverseId);
-        String expected = "PQ1HF3";
-        String result = dataverseClient.retrieveDataverseContentsByDataverseId(dvId);
+        //Long dsId = Long.parseLong(datasetId);
+        System.out.println("datasetId="+datasetId);
+        String expected = datasetIdentifier;
+        System.out.println("expected datasetIdentifier="+datasetIdentifier);
+        String result = dataverseClient.retrieveDatasetContentsByDatasetId(datasetId);
         System.out.println("result="+result);
         String actual = dataverseClient.getDatasetIdFromDatasetContentsFromString(result);
-        System.out.println("actual Id="+actual);
+        System.out.println("actual datasetIdentifier="+actual);
         assertThat("dataset Id", actual, equalTo(expected));
         
     }
@@ -718,4 +728,22 @@ public class Jersey2DataverseClientTest {
     }
     
     
+    /**
+     * Test downloadDatafilesByDatasetId of class Jersey2DataverseClient.
+     */
+
+    @Test
+    public void testDownloadDatafilesByDatasetId(){
+        System.out.println("\n\n testing downloadDatafilesByDatasetId");
+         // datafileId = "";
+        System.out.println("datasetId="+datasetId);
+         //String destDir = "";
+        System.out.println("destDir="+destDir);
+        // test defalt case
+        System.out.println("zipfileName="+"[blank]");
+        dataverseClient.downloadDatafilesByDatasetId(datasetId, destDir, "");
+        // user-specified case
+        // dataverseClient.downloadDatafilesByDatasetId(datasetId, destDir, "some_test");
+        
+    }
 }
