@@ -125,7 +125,8 @@
         
     </dependencies>
     
-    <build>  
+    <build>
+<!--        <finalName>dataverse-client-api</finalName>-->
         <plugins>  
             <plugin>  
                 <groupId>org.apache.maven.plugins</groupId>  

@@ -1650,13 +1650,25 @@ public class Jersey2DataverseClient {
             //client.close();
         }
     }
+    
+    
+    /**
+     * Downloads a set of datafiles within a dataset by its Id in one pass.
+     * The identifier of a dataset is used for the name of a zip file to be downloaded.
+     * 
+     * @param datasetId the Id of a dataset whose files are to be downloaded
+     * @param destDir the directory in which a zip file to be downloaded is saved
+     */
+    public void downloadDatafilesByDatasetId(String datasetId, String destDir){
+        downloadDatafilesByDatasetId(datasetId, destDir, null);
+    }
 
     /**
      * Downloads a set of datafiles within a dataset by its Id in one pass.
      * 
      * @param datasetId the Id of a dataset whose files are to be downloaded
      * @param destDir the directory in which a zip file to be downloaded is saved
-     * @param zipfileName the name a file name without extension for a downloaded zip file; if "" (blank) is specified, the identifier of a dataset is used.
+     * @param zipfileName the name a file name without extension for a downloaded zip file; if "" (blank) or null is specified, the identifier of a dataset is used.
      */
     public void downloadDatafilesByDatasetId(String datasetId, String destDir, String zipfileName) {
         // to be refactored soon
@@ -1674,7 +1686,7 @@ public class Jersey2DataverseClient {
         // concatenate it
         //String datafileIdSet = String.join(",", datafileIdList);
         //logger.log(Level.INFO, "datafileIdSet={0}", datafileIdSet);
-        String finalFileName = zipfileName.equals("") ? getDatasetIdFromDatasetContentsFromString(result) : zipfileName;
+        String finalFileName = StringUtils.isBlank(zipfileName) ? getDatasetIdFromDatasetContentsFromString(result) : zipfileName;
         
         
         
@@ -1682,13 +1694,6 @@ public class Jersey2DataverseClient {
         downloadDatafilesByDatafileIds(String.join(",",getDatafileIdListFromDatasetContentsFromString(result)), destDir, getDatasetIdFromDatasetContentsFromString(result));
         
         logger.log(Level.INFO, "===== leaving downloadDatafilesByDatasetId =====");
-        
-        
-        
-        
-
-        
-        
         
     }
 
