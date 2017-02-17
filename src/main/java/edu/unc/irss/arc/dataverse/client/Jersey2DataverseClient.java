@@ -1671,7 +1671,7 @@ public class Jersey2DataverseClient {
      * @param zipfileName the name a file name without extension for a downloaded zip file; if "" (blank) or null is specified, the identifier of a dataset is used.
      */
     public void downloadDatafilesByDatasetId(String datasetId, String destDir, String zipfileName) {
-        // to be refactored soon
+        
         logger.log(Level.INFO, "===== within downloadDatafilesByDatasetId ===== ");
         logger.log(Level.INFO, "datasetId={0}", datasetId);
         logger.log(Level.INFO, "destDir={0}", destDir);
@@ -1696,6 +1696,55 @@ public class Jersey2DataverseClient {
         logger.log(Level.INFO, "===== leaving downloadDatafilesByDatasetId =====");
         
     }
+    
+    
+    /**
+     *  Downloads a set of datafiles within a dataset by its persistent Id in one pass.
+     * 
+     * The identifier of a dataset is used for the name of a zip file to be downloaded.
+     * @param persistentId the persistent Id of a dataset
+     * @param destDir the directory in which a zip file to be downloaded is saved
+     */
+    public void downloadDatafilesByPersistentId(String persistentId, String destDir) {
+        downloadDatafilesByPersistentId(persistentId, destDir, null);
+    }
+    
+    
+    /**
+     * Downloads a set of datafiles within a dataset by its persistent Id in one pass.
+     * @param persistentId the persistent Id of a dataset
+     * @param destDir the directory in which a zip file to be downloaded is saved
+     * @param zipfileName the name a file name without extension for a downloaded zip file; if "" (blank) or null is specified, the identifier of a dataset is used.
+     */
+    public void downloadDatafilesByPersistentId(String persistentId, String destDir, String zipfileName) {
+        
+        logger.log(Level.INFO, "===== within downloadDatafilesByPersistentId ===== ");
+        logger.log(Level.INFO, "persistentId={0}", persistentId);
+        logger.log(Level.INFO, "destDir={0}", destDir);
+        logger.log(Level.INFO, "zipfileName={0}", zipfileName);
+        
+        // get the metadata of datasetId
+        String result = retrieveDatasetContentsByPersistentId(persistentId);
+        logger.log(Level.INFO, "returned json object={0}", result);
+        // get a list of datafileIds 
+        //List<String> datafileIdList = getDatafileIdListFromDatasetContentsFromString(result);
+        //logger.log(Level.INFO, "datafileIdList={0}", datafileIdList);
+        // concatenate it
+        //String datafileIdSet = String.join(",", datafileIdList);
+        //logger.log(Level.INFO, "datafileIdSet={0}", datafileIdSet);
+        String finalFileName = StringUtils.isBlank(zipfileName) ? getDatasetIdFromDatasetContentsFromString(result) : zipfileName;
+        
+        logger.log(Level.INFO, "finalFileName={0}", finalFileName);
+        downloadDatafilesByDatafileIds(String.join(",",getDatafileIdListFromDatasetContentsFromString(result)), destDir, getDatasetIdFromDatasetContentsFromString(result));
+        
+        logger.log(Level.INFO, "===== leaving downloadDatafilesByPersistentId =====");
+        
+    }
+    
+    
+    
+    
+    
 
     /**
      * Deletes a datafile by its Id

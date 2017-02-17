@@ -731,7 +731,7 @@ public class Jersey2DataverseClientTest {
     /**
      * Test downloadDatafilesByDatasetId of class Jersey2DataverseClient.
      */
-
+    @Ignore
     @Test
     public void testDownloadDatafilesByDatasetId(){
         System.out.println("\n\n testing downloadDatafilesByDatasetId");
@@ -742,8 +742,22 @@ public class Jersey2DataverseClientTest {
         // test defalt case
         System.out.println("zipfileName="+"[blank]");
         dataverseClient.downloadDatafilesByDatasetId(datasetId, destDir, "");
-        // user-specified case
-        // dataverseClient.downloadDatafilesByDatasetId(datasetId, destDir, "some_test");
-        
     }
+    
+    
+    /**
+     * Test downloadDatafilesByPersistentId of class Jersey2DataverseClient.
+     */
+    @Test
+    public void testDownloadDatafilesByPersistentId(){
+        System.out.println("\n\n testing downloadDatafilesByPersistentId");
+         // datafileId = "";
+        System.out.println("persistentId="+persistentId);
+         //String destDir = "";
+        System.out.println("destDir="+destDir);
+        // test defalt case
+        System.out.println("zipfileName="+"[blank]");
+        dataverseClient.downloadDatafilesByDatasetId(datasetId, destDir, "");
+    }
+    
 }
